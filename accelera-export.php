@@ -283,6 +283,7 @@ function accelera_export_in_csv()
 	/////*************************/////
 	$results_tasks=array();
 	$homeurl_pq = preg_quote(get_home_url(), '/');
+	$acc_webserver = strtolower( explode('/', $_SERVER['SERVER_SOFTWARE'])[0] );
 
 	write_log("Accelera Export - Step 5 completed");
 	
@@ -430,12 +431,12 @@ function accelera_export_in_csv()
 
 	//--------------- CSS combine
 	if ($http2_support) { 
-		$results_tasks[] = "HTTP/2";
-		$results_tasks[] = "HTTP/2";
+		$results_tasks[] = "B";
+		$results_tasks[] = "B";
 	}
 	else { 
-		$results_tasks[] = "No HTTP/2";
-		$results_tasks[] = "No HTTP/2";
+		$results_tasks[] = "A";
+		$results_tasks[] = "A";
 	}
 
 	write_log("Accelera Export - Step 8 completed");
@@ -477,8 +478,9 @@ function accelera_export_in_csv()
 		}
 	}
 
-	if ($a > 0) { $results_tasks[] = 'To do'; }
-	else $results_tasks[] = 'Done';
+	if( $a > 0 && $acc_webserver != "nginx" ) { $results_tasks[] = 'B'; }
+	elseif ($a > 0 && $acc_webserver == "nginx" ) { $results_tasks[] = 'C'; }
+	else $results_tasks[] = 'A';
 
 	write_log("Accelera Export - Step 9 completed");
 

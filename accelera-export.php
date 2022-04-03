@@ -496,15 +496,15 @@ function accelera_export_in_csv()
 		foreach( $js_files[0] as $js_file ) {
 			if (preg_match($deferstring, $js_file)) { $deferred++; }
 		}
-		if (count($js_files[0]) - $deferred <= 3) { return "Done"; } // Return if files are deferred
-		else return "To do";
+		if (count($js_files[0]) - $deferred <= 3) { return "B"; } // Return if files are deferred
+		else return "A";
 	}
 
 	if ( ( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['defer_all_js'] ) ||
 		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-js_defer', false) > 0 ) ||
 		( $ao && get_option('autoptimize_js') == "on" && get_option('autoptimize_js_defer_not_aggregate') == "on" ) ||
 		( $ao && get_option('autoptimize_js') == "on" && get_option('autoptimize_js_aggregate') == "on" && !get_option('autoptimize_js_forcehead') ) ) {
-			$results_tasks[] = "Done"; //If Rocket/AO/LiteSpeed are already doing that, all good
+			$results_tasks[] = "B"; //If Rocket/AO/LiteSpeed are already doing that, all good
 		}
 	else $results_tasks[] = arejs_deferred($home_url_body,$homeurl_pq);
 

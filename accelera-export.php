@@ -509,13 +509,16 @@ function accelera_export_in_csv()
 	else $results_tasks[] = arejs_deferred($home_url_body,$homeurl_pq);
 
 	//--------------- Control Heartbeat?
-	if ( ( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['control_heartbeat'] ) ||
-		( $good_cache_plugins['litespeed-cache'] && ( get_option('litespeed.conf.misc-heartbeat_front', false) || get_option('litespeed.conf.misc-heartbeat_back', false) || get_option('litespeed.conf.misc-heartbeat_editor', false) ) > 0 ) ||
-		( $good_cache_plugins['swift-performance'] && is_array(get_option( 'swift_performance_options', false )['disable-heartbeat'])) ||
-		( $heartbeatplugin ) ) {
-			$results_tasks[] = "Done"; //If Rocket/Swift/LiteSpeed/HBbyWPR are already doing that, all good
-	}
-	else $results_tasks[] = "-"; //To be manually checked
+	if ( $good_cache_plugins['rocket'] || $good_cache_plugins['litespeed-cache'] || $good_cache_plugins['swift-performance'] || $heartbeatplugin ) { // If Rocket/Swift/LiteSpeed/HBbyWPR are installed...
+        if ( $accelera_wprocketoptions['control_heartbeat'] ||
+         ( get_option('litespeed.conf.misc-heartbeat_front', false) || get_option('litespeed.conf.misc-heartbeat_back', false) || get_option('litespeed.conf.misc-heartbeat_editor', false) ) > 0 || 
+         is_array(get_option( 'swift_performance_options', false )['disable-heartbeat']) ||
+         $heartbeatplugin ) {
+            $results_tasks[] = "C"; //If Rocket/Swift/LiteSpeed/HBbyWPR are already doing that, all good
+         }
+        else $results_tasks[] = "B"; //Means they are not doing it
+    }
+	else $results_tasks[] = "A"; //If no compatible plugin installed
 
 	//--------------- Clean headers of website
 	function are_headers_clean($home_url_body) {

@@ -689,7 +689,7 @@ function accelera_export_in_csv()
 	if ( is_array( $query ) ) {
 		$duplicated_termmeta = array_sum( array_map( 'intval', $query ) );
 	}
-	// Autoloads size
+	// Autoloads size (in KB)
 	$autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
 	foreach($autoloads_result as $object=>$uno){
 		$autoloads = round($uno->autoload_size);

@@ -533,9 +533,9 @@ function accelera_export_in_csv()
 	else $results_tasks[] = "A"; //Done
 
 	//--------------- Checking if self pingbacks are disabled
-	if (!get_option('default_pingback_flag')) { $results_tasks[] = "Done"; }
+	if (!get_option('default_pingback_flag')) { $results_tasks[] = "A"; }
 	else {
-		$results_tasks[] = "-"; //To be manually checked
+		$results_tasks[] = "MAN_CH"; //To be manually checked
 	}
 
 	//--------------- External resources optimization

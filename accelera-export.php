@@ -692,7 +692,7 @@ function accelera_export_in_csv()
 	// Autoloads size
 	$autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
 	foreach($autoloads_result as $object=>$uno){
-		$autoloads = round($uno->autoload_size) . ' KB';
+		$autoloads = round($uno->autoload_size);
 	}
 
 	//--------------- Building arrays to put in csv

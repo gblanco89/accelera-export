@@ -104,7 +104,7 @@ function accelera_export_in_csv()
 	///// Preparations - theme and plugin definitions
 	/////*************************/////
 	$goodthemes = array("Twenty Nineteen", "Twenty Twenty", "Twenty Twenty-One", "Neve", "Blocksy", "Astra", "OceanWP", "Storefront", "Suki", "Kadence", "Mesmerize", "MagazineWP", "Acabado", "Extra", "Genesis");
-	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = false;
+	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = false;
 	$bad_image_optimizers = array(
 		"wp-smushit" => false,
 		"ewww-image-optimizer" => false,
@@ -422,7 +422,7 @@ function accelera_export_in_csv()
 			}
 			else $results_tasks[] = 'A';
 		}
-		else $results_tasks[] = '-'; //It's still possible that we are serving Brotli, but we can't know...
+		else $results_tasks[] = 'MAN_CH'; //It's still possible that we are serving Brotli, but we can't know...
 	}
 	
 	//--------------- Update PHP version
@@ -539,7 +539,7 @@ function accelera_export_in_csv()
 	}
 
 	//--------------- External resources optimization
-	$gf = $ga = false;
+	$gf = $ga = $wpr_delay = false;
 	
 	function isthere_gf($home_url_body,$good_cache_plugins,$my_theme) { //Check if we see fonts in the code
 		if ( ($my_theme->get( 'Name' ) == 'Astra') && get_option( 'astra-settings', false )['load-google-fonts-locally'] ) { //If Astra is locally hosting fonts
@@ -561,11 +561,26 @@ function accelera_export_in_csv()
 
 	if (isthere_gf($home_url_body,$good_cache_plugins,$my_theme)) $gf = true;
 	if (isthere_ga($home_url_body)) $ga = true;
-	
-	if ($gf && $ga) { $results_tasks[] = "GF & GA"; }
-	elseif ($gf) { $results_tasks[] = "GF"; }
-	elseif ($ga) { $results_tasks[] = "GA"; }
-	else { $results_tasks[] = "Done"; }
+	if ($good_cache_plugins['rocket'] && $accelera_wprocketoptions['delay_js']) $wpr_delay = true;
+
+	if ($wpr_delay || $flyingscripts) {
+		if ($gf && $ga) { $results_tasks[] = "D"; }
+		elseif ($gf) { $results_tasks[] = "C"; }
+		elseif ($ga) { $results_tasks[] = "B"; }
+		else { $results_tasks[] = "A"; }
+	}
+	elseif ($good_cache_plugins['rocket']) {
+		if ($gf && $ga) { $results_tasks[] = "K"; }
+		elseif ($gf) { $results_tasks[] = "I"; }
+		elseif ($ga) { $results_tasks[] = "E"; }
+		else { $results_tasks[] = "L"; }
+	}
+	else {
+		if ($gf && $ga) { $results_tasks[] = "F"; }
+		elseif ($gf) { $results_tasks[] = "G"; }
+		elseif ($ga) { $results_tasks[] = "J"; }
+		else { $results_tasks[] = "H"; }
+	}
 
 	write_log("Accelera Export - Step 10 completed");
 

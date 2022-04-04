@@ -591,7 +591,7 @@ function accelera_export_in_csv()
 	$results_tasks[] = preconnects_count($home_url_body, $ao, $pfmatters);
 
 	//--------------- Ads analysis
-	$results_tasks[] = "-"; //To be manually checked
+	$results_tasks[] = "MAN_CH"; //To be manually checked
 
 	//--------------- Disable WP-Cron
 	if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON === true) { //Just check if the constant is defined

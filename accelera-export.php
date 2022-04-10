@@ -553,7 +553,7 @@ function accelera_export_in_csv()
    	}
 
 	function isthere_ga($home_url_body) { //Check if we see analytics in the code
-		if (preg_match( "/analytics\.js|analyticsjs/", $home_url_body )) {
+		if (preg_match( "/<script.*googletagmanager\.com\/gtag\/js\?id=[UAG]+-[0-9A-Z-]+(\"|')/", $home_url_body )) {
 			return true;
 		}
 		else return false;

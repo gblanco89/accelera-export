@@ -413,7 +413,7 @@ function accelera_export_in_csv()
 	if ($home_url_headers['content-encoding'] == "br") { $results_tasks[] = 'D'; }
 	else {
 		$the_curl_version = curl_version();
-		if ( (version_compare($the_curl_version["version"], '7.57.0') >= 0) && ($version['features'] & constant('CURL_VERSION_BROTLI'))) { //First we check that CURL supports brotli and it is active
+		if ( (version_compare($the_curl_version["version"], '7.57.0') >= 0) && ($the_curl_version['features'] & constant('CURL_VERSION_BROTLI'))) { //First we check that CURL supports brotli and it is active
 			if ($home_url_headers['content-encoding'] == "gzip" && $home_url_headers['server'] == "cloudflare") { //If CF active and server has only Gzip
 				$results_tasks[] = 'C';
 			}

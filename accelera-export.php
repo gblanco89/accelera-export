@@ -606,7 +606,12 @@ function accelera_export_in_csv()
 	$results_tasks[] = preconnects_count($home_url_body, $ao, $pfmatters);
 
 	//--------------- Ads analysis
-	$results_tasks[] = "MAN_CH"; //To be manually checked
+	function are_there_ads($home_url_body) {
+		$cleanstring = "/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js|amazon-adsystem\.com|securepubads.g.doubleclick.net/"; // If we see that the Ads JS is loaded, means there are ads
+		if (preg_match( $cleanstring, $home_url_body )) { return "A"; }
+		else return "B";
+	}
+	$results_tasks[] = are_there_ads($home_url_body);
 
 	//--------------- Disable WP-Cron
 	if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON === true) { //Just check if the constant is defined

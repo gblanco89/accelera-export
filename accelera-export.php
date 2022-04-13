@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.2
+Version: 0.2.1
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -61,7 +61,7 @@ function accelera_export()
 		//Nitropack
 		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 			<div class="notice notice-warning">
-				<p><?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="https://test.gerardblanco.com/wp-admin/options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?></p>
+				<p><?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?></p>
 			</div><?php
 		} ?>
 
@@ -709,8 +709,8 @@ function accelera_export_in_csv()
 	/////*************************/////
 	///// Time to write to file
 	/////*************************/////
-	//$filename=time()."_"."accelera-export.csv";
-	$filename="test.csv";
+	$filename=time()."_"."accelera-export.csv";
+	//$filename="test.csv";
 	$upload_dir = wp_upload_dir();
 	$file = fopen($upload_dir['basedir'].'/'.$filename,"w");
 

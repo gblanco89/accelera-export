@@ -282,7 +282,7 @@ function accelera_export_in_csv()
 	///// Checks and populating $results_tasks
 	/////*************************/////
 	$results_tasks=array();
-	$homeurl_pq = preg_quote(get_home_url(), '/');
+    $thedomain = preg_quote(parse_url(get_home_url())['host']);
 	$acc_webserver = strtolower( explode('/', $_SERVER['SERVER_SOFTWARE'])[0] );
 
 	write_log("Accelera Export - Step 5 completed");
@@ -328,10 +328,11 @@ function accelera_export_in_csv()
 	write_log("Accelera Export - Step 6 completed");
 
 	//--------------- CSS Minification
-	function how_many_unminified_css_files($home_url_body, $homeurl_pq, $lines_per_file ) {
+	function how_many_unminified_css_files($home_url_body, $thedomain, $lines_per_file ) {
 		$unminimized_css_files = 0;
-		// Find all local css files (except those .min.css)
-		if ( preg_match_all( "/({$homeurl_pq}[^\"']*(?<!\.min)\.css)/i", $home_url_body, $css_files ) ) {
+
+		// Find all local css files (except those .min.css). Regex looks for http(s)://subdomains.domain.com/whatever/blabla.(!min).css
+		if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.css)/", $home_url_body, $css_files ) ) {
 			// Loop through all the local CSS files and count how many lines they have
 			foreach( $css_files[0] as $css_file ) {
 				$linecount = 0;
@@ -358,7 +359,7 @@ function accelera_export_in_csv()
 		( $ao && get_option('autoptimize_css') == "on" ) ) {
 		$results_tasks[] = 'C';
 	}
-	elseif (how_many_unminified_css_files($home_url_body,$homeurl_pq,4) > 0) { //Unminified
+	elseif (how_many_unminified_css_files($home_url_body,$thedomain,4) > 0) { //Unminified
 		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $spai) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
@@ -370,11 +371,11 @@ function accelera_export_in_csv()
 	write_log("Accelera Export - Step 7 completed");
 
 	//--------------- JS minification
-	function how_many_unminified_js_files($home_url_body,$homeurl_pq, $lines_per_file ) {
+	function how_many_unminified_js_files($home_url_body,$thedomain, $lines_per_file ) {
 		$unminimized_js_files = 0;
 
-		// Find all local js files (except those .min.js)
-		if ( preg_match_all( "/({$homeurl_pq}[^\"']*(?<!\.min)\.js)/i", $home_url_body, $js_files ) ) {
+		// Find all local css files (except those .min.css). Regex looks for http(s)://subdomains.domain.com/whatever/blabla.(!min).js
+		if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.css)/", $home_url_body, $js_files ) ) {
 			// Loop through all the local js files and count how many lines they have
 			foreach( $js_files[0] as $js_file ) {
 				$linecount = 0;
@@ -400,7 +401,7 @@ function accelera_export_in_csv()
 		( $ao && get_option('autoptimize_js') == "on" ) ) {
 		$results_tasks[] = 'C';
 	}
-	elseif (how_many_unminified_js_files($home_url_body,$homeurl_pq,4) > 0) { //Unminified
+	elseif (how_many_unminified_js_files($home_url_body,$thedomain,4) > 0) { //Unminified
 		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"]) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
@@ -446,21 +447,21 @@ function accelera_export_in_csv()
 		// We return the style.css of the theme, always present
 		return get_template_directory_uri() . '/style.css';
 	}
-	function return_first_js($home_url_body,$homeurl_pq) { //Get a sample of JS
+	function return_first_js($home_url_body,$thedomain) { //Get a sample of JS
 		// Find and return first local js file
-		preg_match( "/({$homeurl_pq}[^\"']*\.js)/i", $home_url_body, $js_file );
+		preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.js)/i", $home_url_body, $js_file );
 		if (!empty($js_file)) { return $js_file; }
 		else return array("vacio");
 	}
-	function return_first_img($home_url_body,$homeurl_pq) { //Get a sample of IMG
+	function return_first_img($home_url_body,$thedomain) { //Get a sample of IMG
 		// Find and return first local img file
-		preg_match( "/({$homeurl_pq}[^\"']*\.(jpg|jpeg|png|gif))/i", $home_url_body, $img_file );
+		preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.(jpg|jpeg|png|gif))/i", $home_url_body, $img_file );
 		if (!empty($img_file)) { return $img_file; }
 		else return array("vacio");
 	}
 
 	// Getting an array of the first asset of each type
-	$first_assets=array( return_first_css(), return_first_js($home_url_body,$homeurl_pq)[0], return_first_img($home_url_body,$homeurl_pq)[0] );
+	$first_assets=array( return_first_css(), return_first_js($home_url_body,$thedomain)[0], return_first_img($home_url_body,$thedomain)[0] );
 	$a = 0; //Counter of browser cache too low
 
 	//Let's check the actual cache-control for each asset
@@ -485,16 +486,16 @@ function accelera_export_in_csv()
 	write_log("Accelera Export - Step 9 completed");
 
 	//--------------- Defer parsing of JS
-	function arejs_deferred($home_url_body,$homeurl_pq) {
+	function arejs_deferred($home_url_body,$thedomain) {
 		$deferred = 0; //counter of deferred
 		$deferstring = "/defer='defer'|defer=\"defer\"/";
 
 		// Find all local js files
-		preg_match_all( "/<script.*{$homeurl_pq}.*\.js.*<\/script>/i", $home_url_body, $js_files );
+		preg_match_all( "/<script.*{$thedomain}.*\.js.*<\/script>/i", $home_url_body, $js_files );
 
 		// Loop through all the local js files and check if they are deferred
 		foreach( $js_files[0] as $js_file ) {
-			if (preg_match($deferstring, $js_file)) { $deferred++; }
+            if (preg_match($deferstring, $js_file)) { $deferred++; }
 		}
 		if (count($js_files[0]) - $deferred <= 3) { return "B"; } // Return if files are deferred
 		else return "A";
@@ -506,7 +507,7 @@ function accelera_export_in_csv()
 		( $ao && get_option('autoptimize_js') == "on" && get_option('autoptimize_js_aggregate') == "on" && !get_option('autoptimize_js_forcehead') ) ) {
 			$results_tasks[] = "B"; //If Rocket/AO/LiteSpeed are already doing that, all good
 		}
-	else $results_tasks[] = arejs_deferred($home_url_body,$homeurl_pq);
+	else $results_tasks[] = arejs_deferred($home_url_body,$thedomain);
 
 	//--------------- Control Heartbeat?
 	if ( $good_cache_plugins['rocket'] || $good_cache_plugins['litespeed-cache'] || $good_cache_plugins['swift-performance'] || $heartbeatplugin ) { // If Rocket/Swift/LiteSpeed/HBbyWPR are installed...

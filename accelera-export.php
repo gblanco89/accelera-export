@@ -104,7 +104,7 @@ function accelera_export_in_csv()
 	///// Preparations - theme and plugin definitions
 	/////*************************/////
 	$goodthemes = array("Twenty Nineteen", "Twenty Twenty", "Twenty Twenty-One", "Neve", "Blocksy", "Astra", "OceanWP", "Storefront", "Suki", "Kadence", "Mesmerize", "MagazineWP", "Acabado", "Extra", "Genesis");
-	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = false;
+	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = false;
 	$bad_image_optimizers = array(
 		"wp-smushit" => false,
 		"ewww-image-optimizer" => false,
@@ -124,7 +124,8 @@ function accelera_export_in_csv()
 		"siteground_image" => false, //Not text-domain, check to be made later
 		"litespeed_image" => false, //Not text-domain, check to be made later
 		"swift_image" => false, //Not text-domain, check to be made later
-		"wp_optimize_image" => false //Not text-domain, check to be made later
+		"wp_optimize_image" => false, //Not text-domain, check to be made later
+		"jetpack_images" => false //Not text-domain, check to be made later
 	);
 	$good_cache_plugins = array(
 		"swift-performance" => false,
@@ -252,6 +253,7 @@ function accelera_export_in_csv()
 			if($plugin['TextDomain']=='perfmatters' && is_plugin_active($key)) { $pfmatters = true; }
 			if($plugin['TextDomain']=='wp-optimize' && is_plugin_active($key)) { $wpoptimize = true; }
 			if($plugin['TextDomain']=='heartbeat-control' && is_plugin_active($key)) { $heartbeatplugin = true; }
+			if($plugin['TextDomain']=='jetpack' && is_plugin_active($key)) { $jetpack = true; }
 
 			//Checking page builders
 			if(array_key_exists($plugin['TextDomain'], $pagebuilders) && is_plugin_active($key)) { 
@@ -277,6 +279,7 @@ function accelera_export_in_csv()
 	$accelera_wprocketoptions = get_option( 'wp_rocket_settings', false ); //Get WP Rocket options
 	$accelera_swiftoptions = get_option( 'swift_performance_options', false ); //Get Swift Performance options
 	$accelera_wpoptimizeoptions = get_option( 'wpo_cache_config', false ); //Get WPOptimize options
+	$accelera_jetpackmodules = get_option( 'jetpack_active_modules', false ); // Get Jetpack modules
 	
 	/////*************************/////
 	///// Checks and populating $results_tasks
@@ -300,6 +303,9 @@ function accelera_export_in_csv()
 	}
 	if ($wpoptimize && get_option('wp-optimize-autosmush', false) > 0 ) {
 		$bad_image_optimizers["wp_optimize_image"] = true;
+	}
+	if ($jetpack && in_array("photon", $accelera_jetpackmodules)) {
+		$bad_image_optimizers["jetpack_images"] = true;
 	}
 
 	if (in_array(true,$bad_image_optimizers)) { $results_tasks[]='E'; }

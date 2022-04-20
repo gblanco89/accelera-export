@@ -594,7 +594,7 @@ function accelera_export_in_csv()
 	//--------------- Preconnect to external sites
 	function preconnects_count($home_url_body, $ao, $pfmatters) {
 		$preconnect = 0; // Counter of preconnects
-		$preconnectstr = "/rel='preconnect'|rel=\"preconnect\"/";
+		$preconnectstr = "/rel=preconnect|rel='preconnect'|rel=\"preconnect\"/";
 		preg_match_all( "/<link.*>/i", $home_url_body, $linklines ); //Get all <link
 
 		// Loop through all <link and check if they are preconnected

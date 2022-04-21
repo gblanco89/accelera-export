@@ -372,8 +372,8 @@ function accelera_export_in_csv()
 		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $spai || $assetcleanup) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
-	else { //Minified
-		if ($ao || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"]) { $results_tasks[] = 'C'; }
+	else { //Minified, either because there's nothing to minimize or because of a bad plugin
+		if ($spai || $good_cache_plugins['rocket'] || $ao || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'C'; } //Ideally we would check if there's a bad plugin minimizing, to do
 		else $results_tasks[] = 'E';
 	}
 
@@ -415,8 +415,8 @@ function accelera_export_in_csv()
 		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
-	else { //Minified
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"]) { $results_tasks[] = 'C'; }
+	else { //Minified, either because there's nothing to minimize or because of a bad plugin
+		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'C'; } //Ideally we would check if there's a bad plugin minimizing, to do
 		else $results_tasks[] = 'E';
 	}
 

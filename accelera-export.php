@@ -104,7 +104,7 @@ function accelera_export_in_csv()
 	///// Preparations - theme and plugin definitions
 	/////*************************/////
 	$goodthemes = array("Twenty Nineteen", "Twenty Twenty", "Twenty Twenty-One", "Neve", "Blocksy", "Astra", "OceanWP", "Storefront", "Suki", "Kadence", "Mesmerize", "MagazineWP", "Acabado", "Extra", "Genesis");
-	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = false;
+	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
 	$bad_image_optimizers = array(
 		"wp-smushit" => false,
 		"ewww-image-optimizer" => false,
@@ -254,6 +254,7 @@ function accelera_export_in_csv()
 			if($plugin['TextDomain']=='wp-optimize' && is_plugin_active($key)) { $wpoptimize = true; }
 			if($plugin['TextDomain']=='heartbeat-control' && is_plugin_active($key)) { $heartbeatplugin = true; }
 			if($plugin['TextDomain']=='jetpack' && is_plugin_active($key)) { $jetpack = true; }
+			if($plugin['TextDomain']=='wp-asset-clean-up' && is_plugin_active($key)) { $assetcleanup = true; }
 
 			//Checking page builders
 			if(array_key_exists($plugin['TextDomain'], $pagebuilders) && is_plugin_active($key)) { 
@@ -280,6 +281,7 @@ function accelera_export_in_csv()
 	$accelera_swiftoptions = get_option( 'swift_performance_options', false ); //Get Swift Performance options
 	$accelera_wpoptimizeoptions = get_option( 'wpo_cache_config', false ); //Get WPOptimize options
 	$accelera_jetpackmodules = get_option( 'jetpack_active_modules', false ); // Get Jetpack modules
+	$accelera_assetcleanoptions = get_option( 'wpassetcleanup_settings', false ); // Get Asset Cleanup settings
 	
 	/////*************************/////
 	///// Checks and populating $results_tasks
@@ -362,11 +364,12 @@ function accelera_export_in_csv()
 		( $spai && $accelera_spaioptions->settings->areas->parse_css_files ) || 
 		( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['minify_css'] ) ||
 		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-css_min', false) > 0 ) ||
-		( $ao && get_option('autoptimize_css') == "on" ) ) {
+		( $ao && get_option('autoptimize_css') == "on" ) ||
+		( $assetcleanup && strpos($accelera_assetcleanoptions,'"minify_loaded_css":"1"') !== false ) ) {
 		$results_tasks[] = 'C';
 	}
 	elseif (how_many_unminified_css_files($home_url_body,$thedomain,4) > 0) { //Unminified
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $spai) { $results_tasks[] = 'B'; }
+		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $spai || $assetcleanup) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
 	else { //Minified
@@ -404,11 +407,12 @@ function accelera_export_in_csv()
 	elseif ( //If WP Rocket, AO or LiteSpeed are already minimizing  
 		( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['minify_js'] ) ||
 		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-js_min', false) > 0 ) ||
-		( $ao && get_option('autoptimize_js') == "on" ) ) {
+		( $ao && get_option('autoptimize_js') == "on" ) ||
+		( $assetcleanup && strpos($accelera_assetcleanoptions,'"minify_loaded_js":"1"') !== false ) ) {
 		$results_tasks[] = 'C';
 	}
 	elseif (how_many_unminified_js_files($home_url_body,$thedomain,4) > 0) { //Unminified
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"]) { $results_tasks[] = 'B'; }
+		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
 	else { //Minified

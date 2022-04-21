@@ -552,7 +552,7 @@ function accelera_export_in_csv()
 		if ( ($my_theme->get( 'Name' ) == 'Astra') && get_option( 'astra-settings', false )['load-google-fonts-locally'] ) { //If Astra is locally hosting fonts
 			return false;
 		}
-		elseif ( ( preg_match( "/fonts\.googleapis\.com\/css/", $home_url_body ) ) ||
+		elseif ( ( preg_match( "/fonts\.googleapis\.com\/css|<link[^>]*fonts\.gstatic\.com[^\"']*\.woff2.*?>/", $home_url_body ) ) ||
 		 ( $good_cache_plugins["litespeed-cache"] && get_option('litespeed.conf.optm-ggfonts_async', false ) ) ) {
 			return true;
 		}

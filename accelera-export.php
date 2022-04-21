@@ -184,18 +184,6 @@ function accelera_export_in_csv()
 		$home_url_headers_str = substr($homeurl_headers_response, 0, $home_url_header_size); //Headers in a single string
 		$home_url_body = substr($homeurl_headers_response, $home_url_header_size);
 
-		// Finding if HTTP2 also while I'm at it (can't do with wp_remote_get cause it only supports HTTP/1.1)
-		if ( defined("CURL_VERSION_HTTP2") && (curl_version()["features"] & CURL_VERSION_HTTP2) !== 0 ) { //If Curl supports HTTP2
-			if ($homeurl_headers_response !== false && strpos($homeurl_headers_response, "HTTP/2") === 0) { 
-				$http2_support = true;
-			}
-			else $http2_support = false;
-		}
-		elseif ( $_SERVER['SERVER_PROTOCOL'] == "HTTP/2.0" ) { //if curl failed, try the PHP constant
-			$http2_support = true;
-		}
-		else $http2_support = false;
-	
 		// Making curl headers pretty
 		$home_url_headers_str = strstr($home_url_headers_str, "\r\n"); //Removing response status + The seperator used in the Response Header is CRLF (Aka. \r\n) 
 		$home_url_headers_str = strtolower($home_url_headers_str); //Making string lowercase
@@ -206,6 +194,19 @@ function accelera_export_in_csv()
 			$end_array[ $key_value[0] ] = $key_value[1];
 		}
 		$home_url_headers = array_filter($end_array); //Final homepage headers
+
+		// Finding if HTTP2 also while I'm at it (can't do with wp_remote_get cause it only supports HTTP/1.1)
+		if ($home_url_headers['server'] == "cloudflare") { $http2_support = true; } //If CF is active, we assume there's already HTTP2
+		elseif ( defined("CURL_VERSION_HTTP2") && (curl_version()["features"] & CURL_VERSION_HTTP2) !== 0 ) { //If Curl supports HTTP2
+			if ($homeurl_headers_response !== false && strpos($homeurl_headers_response, "HTTP/2") === 0) { 
+				$http2_support = true;
+			}
+			else $http2_support = false;
+		}
+		elseif ( $_SERVER['SERVER_PROTOCOL'] == "HTTP/2.0" ) { //if curl failed, try the PHP constant
+			$http2_support = true;
+		}
+		else $http2_support = false;
 	}
 	else throw new Exception(curl_error($ch));
 

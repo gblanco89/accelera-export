@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.2.1
+Version: 0.4.1
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -619,7 +619,7 @@ function accelera_export_in_csv()
 
 	//--------------- Ads analysis
 	function are_there_ads($home_url_body) {
-		$cleanstring = "/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js|amazon-adsystem\.com|securepubads.g.doubleclick.net/"; // If we see that the Ads JS is loaded, means there are ads
+		$cleanstring = "/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js|amazon-adsystem\.com|securepubads\.g.doubleclick\.net|ads\.adthrive\.com/"; // If we see that the Ads JS is loaded, means there are ads
 		if (preg_match( $cleanstring, $home_url_body )) { return "A"; }
 		else return "B";
 	}

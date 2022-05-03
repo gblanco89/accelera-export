@@ -877,18 +877,18 @@ function accelera_export_in_csv()
 
 	// Check if Persisent Object Cache is required
 	function accelera_object_cache_check() {
-		$result = "OC used";
+		$result = "A";
 		
 		if ( wp_using_ext_object_cache() ) {
 			return $result;
 		}
 
 		if ( ! acc_should_suggest_persistent_object_cache() ) {
-			$result = "OC not required";
+			$result = "C";
 			return $result;
 		}
 
-		return "OC required";
+		return "B";
 	}
 
 	// Determine whether to suggest using a persistent object cache

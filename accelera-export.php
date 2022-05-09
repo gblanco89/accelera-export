@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.5.2
+Version: 0.6
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -319,6 +319,7 @@ function accelera_export_in_csv()
 	///// Checks and populating $results_tasks, array of task results
 	/////**********************************************************************/////
 	$results_tasks=array();
+	$results_tasks_auxiliar=array(); //2nd row on CSV
     $thedomain = preg_quote(parse_url(get_home_url())['host']); // Website domain
 	$acc_webserver = strtolower( explode('/', $_SERVER['SERVER_SOFTWARE'])[0] ); // Web server
 
@@ -335,6 +336,8 @@ function accelera_export_in_csv()
 	                         __/ |            | |                                                 
 	                        |___/             |_|                                                 
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	// First check for plugins that are not completely image optimizers
 	if ($bad_cache_plugins["sg-cachepress"] && get_option('siteground_optimizer_compression_level', false) > 0 ) { // If SG + Compression level > 0
 		$bad_image_optimizers["siteground_image"] = true;
@@ -352,12 +355,20 @@ function accelera_export_in_csv()
 		$bad_image_optimizers["jetpack_images"] = true;
 	}
 
-	if (in_array(true,$bad_image_optimizers)) { $results_tasks[]='E'; }
+	if (in_array(true,$bad_image_optimizers)) { 
+        $results_tasks[]='E';
+        foreach ($bad_image_optimizers as $key => $value) {
+            if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
+        }
+    }
+
 	elseif ($spai && $spio && $ao_images) { $results_tasks[]='F'; }
 	elseif (($spai && $spio) || ($ao_images && $spio)) { $results_tasks[]='C'; }
 	elseif ($spio) { $results_tasks[]='A'; }
 	elseif ($spai || $ao_images) { $results_tasks[]='B'; }
 	else $results_tasks[]='D';
+	
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 	
 	/*
 	  ______ _ _                       _          
@@ -367,15 +378,35 @@ function accelera_export_in_csv()
 	 | |    | | |  __/ | (_| (_| | (__| | | |  __/
 	 |_|    |_|_|\___|  \___\__,_|\___|_| |_|\___|                                     
 	*/
+	$temp_results_tasks_auxiliar = "";
+	
 	// First check for plugins that are not completely cache plugins
 	if ($wpoptimize && $accelera_wpoptimizeoptions['enable_page_caching'] > 0 ) {
 		$bad_cache_plugins["wp_optimize_cache"] = true;
 	}
 
-	if ( defined("WPE_CACHE_PLUGIN_BASE") ) { $results_tasks[] = 'C'; } // WP Engine?
-	elseif (in_array(true,$good_cache_plugins)) { $results_tasks[] = 'A'; }
-	elseif (in_array(true,$bad_cache_plugins)) { $results_tasks[] = 'D'; }
-	else $results_tasks[] = 'B';
+	if ( defined("WPE_CACHE_PLUGIN_BASE") ) { // WP Engine?
+		$results_tasks[] = 'C'; 
+		$temp_results_tasks_auxiliar = "WP Engine";
+	}
+	
+	elseif (in_array(true,$good_cache_plugins)) { 
+		$results_tasks[] = 'A'; 
+		foreach ($good_cache_plugins as $key => $value) {
+            if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
+        }
+	}
+	
+	elseif (in_array(true,$bad_cache_plugins)) { 
+		$results_tasks[] = 'D'; 
+		foreach ($bad_cache_plugins as $key => $value) {
+            if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
+        }
+	}
+
+	else { $results_tasks[] = 'B'; }
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  _______ _                                             _           _     
@@ -391,6 +422,8 @@ function accelera_export_in_csv()
 	elseif (in_array($my_theme->get( 'Name' ),$goodthemes)) { $results_tasks[] = 'A'; }
 	else $results_tasks[] = 'B';
 
+	$results_tasks_auxiliar[] = $my_theme;
+
 	write_log("Accelera Export - Step 6 completed");
 
 	/*
@@ -401,6 +434,8 @@ function accelera_export_in_csv()
 	 | |____ ____) |___) | | | | | | | | | | | | | | | (_| (_| | |_| | (_) | | | |
 	  \_____|_____/_____/  |_| |_| |_|_|_| |_|_|_| |_|\___\__,_|\__|_|\___/|_| |_|
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	function how_many_unminified_css_files($home_url_body, $thedomain, $lines_per_file ) {
 		$unminimized_css_files = 0;
 
@@ -436,14 +471,39 @@ function accelera_export_in_csv()
 	}
 
 	elseif (how_many_unminified_css_files($home_url_body,$thedomain,4) > 0) { // Unminified
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $spai || $assetcleanup) { $results_tasks[] = 'B'; }
-		else $results_tasks[] = 'A';
+		if ($ao) {
+			$results_tasks[] = 'B';
+			$temp_results_tasks_auxiliar = "Autoptimize";
+		}
+		elseif ( $good_cache_plugins["rocket"] ) {
+			$results_tasks[] = 'B';
+			$temp_results_tasks_auxiliar = "WP Rocket";
+		}
+		elseif ( $good_cache_plugins["litespeed-cache"] ) {
+			$results_tasks[] = 'B';
+			$temp_results_tasks_auxiliar = "LiteSpeed Cache";
+		}
+		elseif ( $good_cache_plugins["flying-press"] ) {
+			$results_tasks[] = 'B';
+			$temp_results_tasks_auxiliar = "FlyingPress";
+		}
+		elseif ( $spai ) {
+			$results_tasks[] = 'B';
+			$temp_results_tasks_auxiliar = "ShortPixel Adaptive Images";
+		}
+		elseif ( $assetcleanup) {
+			$results_tasks[] = 'B'; 
+			$temp_results_tasks_auxiliar = "Asset CleanUp";
+		}
+		else { $results_tasks[] = 'A'; }
 	}
 
 	else { // Minified, either because there's nothing to minimize or because of a bad plugin
 		if ($spai || $good_cache_plugins['rocket'] || $ao || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'C'; } // Ideally we would check if there's a bad plugin minimizing, to do
 		else $results_tasks[] = 'E';
 	}
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	write_log("Accelera Export - Step 7 completed");
 
@@ -455,6 +515,8 @@ function accelera_export_in_csv()
 	 | |__| |____) | | | | | | | | | | | | | | | (_| (_| | |_| | (_) | | | |
 	  \____/|_____/  |_| |_| |_|_|_| |_|_|_| |_|\___\__,_|\__|_|\___/|_| |_|
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	function how_many_unminified_js_files($home_url_body,$thedomain, $lines_per_file ) {
 		$unminimized_js_files = 0;
 
@@ -497,6 +559,8 @@ function accelera_export_in_csv()
 		else $results_tasks[] = 'E';
 	}
 
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+
 	/*
 	  ____            _   _ _     _______     _                                                     _             
 	 |  _ \          | | | (_)   / / ____|   (_)                                                   (_)            
@@ -507,6 +571,8 @@ function accelera_export_in_csv()
 	                                           | |                         | |                                    
 	                                           |_|                         |_|                                    
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	if ($home_url_headers['content-encoding'] == "br") { $results_tasks[] = 'D'; }
 	else {
 		$the_curl_version = curl_version();
@@ -522,6 +588,8 @@ function accelera_export_in_csv()
 		else $results_tasks[] = 'MAN_CH'; // It's still possible that we are serving Brotli, but we can't know...
 	}
 	
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+
 	/*
 	  _    _           _       _         _____  _    _ _____                       _             
 	 | |  | |         | |     | |       |  __ \| |  | |  __ \                     (_)            
@@ -532,8 +600,12 @@ function accelera_export_in_csv()
 	        | |                                                                                  
 	        |_|                                                                                  
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	if (version_compare(PHP_VERSION, '7.4.0', '>=')) { $results_tasks[] = 'A'; }
 	else $results_tasks[] = 'B';
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	   _____  _____ _____                       _     _            
@@ -543,6 +615,8 @@ function accelera_export_in_csv()
 	 | |____ ____) |___) | | (_| (_) | | | | | | |_) | | | | |  __/
 	  \_____|_____/_____/   \___\___/|_| |_| |_|_.__/|_|_| |_|\___|
 	*/
+	$temp_results_tasks_auxiliar = "";
+	
 	if ($http2_support) { 
 		$results_tasks[] = "B";
 		$results_tasks[] = "B";
@@ -551,6 +625,9 @@ function accelera_export_in_csv()
 		$results_tasks[] = "A";
 		$results_tasks[] = "A";
 	}
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	write_log("Accelera Export - Step 8 completed");
 
@@ -565,6 +642,8 @@ function accelera_export_in_csv()
 	                                  __/ |                                                                             __/ |
 	                                 |___/                                                                             |___/ 
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	// Get a sample of CSS
 	function return_first_css() {
 		return get_template_directory_uri() . '/style.css'; // We return the style.css of the theme, always present
@@ -606,6 +685,8 @@ function accelera_export_in_csv()
 	elseif ($a > 0 && $acc_webserver == "nginx" ) { $results_tasks[] = 'C'; }
 	else $results_tasks[] = 'A';
 
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+
 	write_log("Accelera Export - Step 9 completed");
 
 	/*
@@ -618,6 +699,8 @@ function accelera_export_in_csv()
 	                            | |                            __/ |                            
 	                            |_|                           |___/                             
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	function arejs_deferred($home_url_body,$thedomain) {
 		$deferred = 0; // Counter of deferred
 		$deferstring = "/defer='defer'|defer=\"defer\"/";
@@ -642,6 +725,8 @@ function accelera_export_in_csv()
 		}
 	else $results_tasks[] = arejs_deferred($home_url_body,$thedomain);
 
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+
 	/*
 	   _____            _             _   _    _                 _   _                _   
 	  / ____|          | |           | | | |  | |               | | | |              | |  
@@ -650,16 +735,42 @@ function accelera_export_in_csv()
 	 | |___| (_) | | | | |_| | | (_) | | | |  | |  __/ (_| | |  | |_| |_) |  __/ (_| | |_ 
 	  \_____\___/|_| |_|\__|_|  \___/|_| |_|  |_|\___|\__,_|_|   \__|_.__/ \___|\__,_|\__|
 	*/
-	if ( $good_cache_plugins['rocket'] || $good_cache_plugins['litespeed-cache'] || $good_cache_plugins['swift-performance'] || $heartbeatplugin ) { // If WPRocket/Swift/LiteSpeed/HBbyWPR are installed...
-        if ( $accelera_wprocketoptions['control_heartbeat'] ||
-         ( get_option('litespeed.conf.misc-heartbeat_front', false) || get_option('litespeed.conf.misc-heartbeat_back', false) || get_option('litespeed.conf.misc-heartbeat_editor', false) ) > 0 || 
-         is_array(get_option( 'swift_performance_options', false )['disable-heartbeat']) ||
-         $heartbeatplugin ) {
-            $results_tasks[] = "C"; // If WP Rocket/Swift/LiteSpeed/HBbyWPR are already doing that, all good
-         }
-        else $results_tasks[] = "B"; // Means they are not doing it
-    }
+	$temp_results_tasks_auxiliar = "";
+
+	// Check whether WPRocket/Swift/LiteSpeed/HBbyWPR are installed and taking care of Heartbeat
+	if ( $good_cache_plugins['rocket'] ) {
+		if ( $accelera_wprocketoptions['control_heartbeat'] ) { $results_tasks[] = "C"; }
+		else {
+			$results_tasks[] = "B";
+			$temp_results_tasks_auxiliar = "WP Rocket";
+		}
+	}
+	
+	elseif ( $good_cache_plugins['litespeed-cache'] ) {
+		if ( ( get_option('litespeed.conf.misc-heartbeat_front', false) || get_option('litespeed.conf.misc-heartbeat_back', false) || get_option('litespeed.conf.misc-heartbeat_editor', false) ) > 0 ) {
+			$results_tasks[] = "C";
+		}
+		else {
+			$results_tasks[] = "B";
+			$temp_results_tasks_auxiliar = "LiteSpeed Cache";
+		}
+	}
+
+	elseif ( $good_cache_plugins['swift-performance'] ) {
+		if ( is_array(get_option( 'swift_performance_options', false )['disable-heartbeat']) ) {
+			$results_tasks[] = "C";
+		}
+		else {
+			$results_tasks[] = "B";
+			$temp_results_tasks_auxiliar = "Swift Performance";
+		}
+	}
+
+	elseif ( $heartbeatplugin ) { $results_tasks[] = "C"; }
+
 	else $results_tasks[] = "A"; // If no compatible plugin installed
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	   _____ _                    _                    _                        __                _         _ _       
@@ -669,12 +780,20 @@ function accelera_export_in_csv()
 	 | |____| |  __/ (_| | | | | | | | |  __/ (_| | (_| |  __/ |  \__ \ | (_) | |    \ V  V /  __/ |_) \__ \ | ||  __/
 	  \_____|_|\___|\__,_|_| |_| |_| |_|\___|\__,_|\__,_|\___|_|  |___/  \___/|_|     \_/\_/ \___|_.__/|___/_|\__\___|
 	*/
-	function are_headers_clean($home_url_body) {
+	$temp_results_tasks_auxiliar = "";
+	
+	function are_headers_clean($home_url_body, &$temp_results_tasks_auxiliar, $pfmatters, $assetcleanup) {
 		$cleanstring = "/<meta name=\"generator\" content=\"WordPress|<link rel=\"wlwmanifest/"; // If we see that the wp version is removed or wlwmanifest is not there, means wp headers have been tweaked, means done.
-		if (preg_match( $cleanstring, $home_url_body )) { return "B"; }
+		if (preg_match( $cleanstring, $home_url_body )) { 
+			if ($pfmatters) { $temp_results_tasks_auxiliar = "Perfmatters"; }
+			elseif ($assetcleanup) { $temp_results_tasks_auxiliar = "Asset CleanUp"; }
+			return "B";
+		}
 		else return "A";
 	}
-	$results_tasks[] = are_headers_clean($home_url_body);
+	$results_tasks[] = are_headers_clean($home_url_body, $temp_results_tasks_auxiliar, $pfmatters, $assetcleanup);
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  _____                                                 _ _        _   _____    _____                    _ _      __ _ _ _            
@@ -686,8 +805,12 @@ function accelera_export_in_csv()
 	                                                 | |                                                __/ |                             
 	                                                 |_|                                               |___/                              
 	*/
+	$temp_results_tasks_auxiliar = "";
+
     if ( has_filter( 'the_content', 'capital_P_dangit' ) ) { $results_tasks[] = "B"; } // Not done
 	else $results_tasks[] = "A"; // Done
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	   _____      _  __         _             _                _              _ _           _     _          _ 
@@ -699,10 +822,14 @@ function accelera_export_in_csv()
 	                     | |             __/ |                                                                 
 	                     |_|            |___/                                                                  
 	*/
+	$temp_results_tasks_auxiliar = "";
+	
 	if (!get_option('default_pingback_flag')) { $results_tasks[] = "A"; }
 	else {
 		$results_tasks[] = "B"; // Unknown
 	}
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  ______      _                        _                                                             _   _           _          _   _             
@@ -714,6 +841,8 @@ function accelera_export_in_csv()
 	                                                                                              | |                                                 
 	                                                                                              |_|                                                 
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	$gf = $ga = $wpr_delay = false;
 	
 	// Check if we see fonts in the code
@@ -764,6 +893,8 @@ function accelera_export_in_csv()
 		else { $results_tasks[] = "H"; }
 	}
 
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
+
 	write_log("Accelera Export - Step 10 completed");
 
 	/*
@@ -774,7 +905,9 @@ function accelera_export_in_csv()
 	 | |   | | |  __/ (_| (_) | | | | | | |  __/ (__| |_  | || (_) | |  __/>  <| ||  __/ |  | | | | (_| | | \__ \ | ||  __/\__ \
 	 |_|   |_|  \___|\___\___/|_| |_|_| |_|\___|\___|\__|  \__\___/   \___/_/\_\\__\___|_|  |_| |_|\__,_|_| |___/_|\__\___||___/
 	*/
-	function preconnects_count($home_url_body, $ao, $pfmatters) {
+	$temp_results_tasks_auxiliar = "";
+
+	function preconnects_count($home_url_body, $ao, $pfmatters, &$temp_results_tasks_auxiliar) {
 		$preconnect = 0; // Counter of preconnects
 		$preconnectstr = "/rel=preconnect|rel='preconnect'|rel=\"preconnect\"/";
 		preg_match_all( "/<link.*>/i", $home_url_body, $linklines ); // Get all <link
@@ -789,11 +922,20 @@ function accelera_export_in_csv()
 		if ($preconnect > 3) { return "D"; }
 		elseif ($preconnect > 0) { return "A";} // If >0 and <=3 preconnects, all good
 		else {
-			if ( $ao || $pfmatters ) { return "B"; }
+			if ( $ao ) {
+				$temp_results_tasks_auxiliar = "Autoptimize";
+				return "B";
+			}
+			elseif ( $pfmatters ) {
+				$temp_results_tasks_auxiliar = "Perfmatters";
+				return "B";
+			}
 			else return "C";
 		}
 	}
-	$results_tasks[] = preconnects_count($home_url_body, $ao, $pfmatters);
+	$results_tasks[] = preconnects_count($home_url_body, $ao, $pfmatters, $temp_results_tasks_auxiliar);
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	              _                         _           _     
@@ -805,12 +947,16 @@ function accelera_export_in_csv()
 	                                           __/ |          
 	                                          |___/           
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	function are_there_ads($home_url_body) {
 		$cleanstring = "/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js|amazon-adsystem\.com|securepubads\.g.doubleclick\.net|ads\.adthrive\.com/"; // If we see that the Ads JS is loaded, means there are ads
 		if (preg_match( $cleanstring, $home_url_body )) { return "A"; }
 		else return "B";
 	}
 	$results_tasks[] = are_there_ads($home_url_body);
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  _____  _           _     _       __          _______         _____                 
@@ -820,10 +966,14 @@ function accelera_export_in_csv()
 	 | |__| | \__ \ (_| | |_) | |  __/    \  /\  /  | |          | |____| | | (_) | | | |
 	 |_____/|_|___/\__,_|_.__/|_|\___|     \/  \/   |_|           \_____|_|  \___/|_| |_|
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON === true) { // Just check if the constant is defined
 		$results_tasks[] = "B";
 	}
 	else $results_tasks[] = "A";
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  _    _            _    _ _______ _______ _____ ___  
@@ -833,8 +983,12 @@ function accelera_export_in_csv()
 	 | |__| \__ \  __/ | |  | |  | |     | |  | |    / /_ 
 	  \____/|___/\___| |_|  |_|  |_|     |_|  |_|   |____|
 	*/
+	$temp_results_tasks_auxiliar = "";
+
 	if ($http2_support) { $results_tasks[] = "A"; }
 	else $results_tasks[] = "B";
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	/*
 	  _____  _   _  _____                   __     _       _    ___  
@@ -846,7 +1000,9 @@ function accelera_export_in_csv()
 	                       | |                                       
 	                       |_|                                       
 	*/
-	function dnsprefetch_count($home_url_body, $good_cache_plugins) {
+	$temp_results_tasks_auxiliar = "";
+	
+	function dnsprefetch_count($home_url_body, $good_cache_plugins, &$temp_results_tasks_auxiliar) {
 		$dnsprefetch = 0; // Counter of dns-prefetch
 		$dnsprefetchtr = "/rel='dns-prefetch'|rel=\"dns-prefetch\"/";
 		preg_match_all( "/<link.*>/i", $home_url_body, $linklines );
@@ -858,13 +1014,26 @@ function accelera_export_in_csv()
 		}
 
 		if ($dnsprefetch <= 2) { // If only <=2 dns-prefetch, needs to be done
-			if ( $good_cache_plugins['rocket'] || $good_cache_plugins['swift-performance'] || $good_cache_plugins['litespeed-cache']) { return "B"; }
+			if ( $good_cache_plugins['rocket'] ) {
+				$temp_results_tasks_auxiliar = "WP Rocket";
+				return "B";
+			}
+			elseif ( $good_cache_plugins['swift-performance'] ) {
+				$temp_results_tasks_auxiliar = "Swift Performance";
+				return "B";
+			}
+			elseif ( $good_cache_plugins['litespeed-cache'] ) {
+				$temp_results_tasks_auxiliar = "LiteSpeed Cache";
+				return "B";
+			}
 			else return "C"; 
 		}
 
 		else return "A";
 	}
-	$results_tasks[] = dnsprefetch_count($home_url_body, $good_cache_plugins);
+	$results_tasks[] = dnsprefetch_count($home_url_body, $good_cache_plugins, $temp_results_tasks_auxiliar);
+
+	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
 	write_log("Accelera Export - Step 11 completed");
 
@@ -1031,7 +1200,8 @@ function accelera_export_in_csv()
 	fputcsv($file,$taskheaders);
 
 	// Writing task results
-	fputcsv($file,$results_tasks);		
+	fputcsv($file,$results_tasks);
+	fputcsv($file,$results_tasks_auxiliar);		
 		
 	// New line
 	fputcsv($file,array(''));

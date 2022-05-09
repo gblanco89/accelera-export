@@ -118,7 +118,7 @@ function accelera_export_in_csv()
 	/////**********************************************************************/////
 	///// Preparations - theme and plugin definitions
 	/////**********************************************************************/////
-	$goodthemes = array("Twenty Nineteen", "Twenty Twenty", "Twenty Twenty-One", "Neve", "Blocksy", "Astra", "OceanWP", "Storefront", "Suki", "Kadence", "Mesmerize", "MagazineWP", "Acabado", "Extra", "Genesis");
+	$goodthemes = array("Twenty Nineteen", "Twenty Twenty", "Twenty Twenty-One", "Neve", "Blocksy", "Astra", "OceanWP", "Storefront", "Suki", "Kadence", "Mesmerize", "MagazineWP", "Acabado", "Extra", "Genesis", "GeneratePress");
 	
 	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
 	

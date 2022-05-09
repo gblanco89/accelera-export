@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.5.0
+Version: 0.5.2
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -229,6 +229,12 @@ function accelera_export_in_csv()
 			$http2_support = true;
 		}
 		else $http2_support = false;
+
+		// Finding whether Cloudflare is configured through an integration
+		$true_cloudflare = false;
+		if ($home_url_headers['server'] == "cloudflare" && $home_url_headers['x-powered-by'] != "wp engine") { // WP Engine? They don't give access to CF dashboard
+			$true_cloudflare = true;
+		}
 	}
 	else throw new Exception(curl_error($ch));
 
@@ -418,7 +424,7 @@ function accelera_export_in_csv()
 		return $unminimized_css_files; // Return the number of files that we don't think are minified
 	}
 
-	if($home_url_headers['server'] == "cloudflare") { $results_tasks[] = 'D'; }
+	if($true_cloudflare) { $results_tasks[] = 'D'; }
 
 	elseif ( //If SPAI, WP Rocket, AO or LiteSpeed are already minimizing
 		( $spai && $accelera_spaioptions->settings->areas->parse_css_files ) || 
@@ -472,7 +478,7 @@ function accelera_export_in_csv()
 		return $unminimized_js_files; // Return the number of files that we don't think are minified
 	}
 
-	if($home_url_headers['server'] == "cloudflare") { $results_tasks[] = 'D'; }
+	if($true_cloudflare) { $results_tasks[] = 'D'; }
 
 	elseif ( // If WP Rocket, AO or LiteSpeed are already minimizing  
 		( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['minify_js'] ) ||
@@ -505,7 +511,7 @@ function accelera_export_in_csv()
 	else {
 		$the_curl_version = curl_version();
 		if ( (version_compare($the_curl_version["version"], '7.57.0') >= 0) && ($the_curl_version['features'] & constant('CURL_VERSION_BROTLI'))) { // First we check that CURL supports brotli and it is active
-			if ($home_url_headers['content-encoding'] == "gzip" && $home_url_headers['server'] == "cloudflare") { // If CF active and server has only Gzip
+			if ($home_url_headers['content-encoding'] == "gzip" && $true_cloudflare) { // If CF active and server has only Gzip
 				$results_tasks[] = 'C';
 			}
 			elseif ($home_url_headers['content-encoding'] == "gzip") {

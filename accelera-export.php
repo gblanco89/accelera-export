@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.6
+Version: 0.8
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -146,11 +146,11 @@ function accelera_export_in_csv()
 	);
 
 	$good_cache_plugins = array(
-		"swift-performance" => false,
-		"rocket" => false,
-		"litespeed-cache" => false,
-		"flying-press" => false,
-		"cache-enabler" => false
+		"swift-performance" => array( false, "Swift Performance"),
+		"rocket" => array (false, "WP Rocket"),
+		"litespeed-cache" => array ( false, "LiteSpeed Cache"),
+		"flying-press" => array (false, "FlyingPress"),
+		"cache-enabler" => array(false, "Cache Enabler")
 	);
 
 	$bad_cache_plugins = array(
@@ -278,7 +278,7 @@ function accelera_export_in_csv()
 				$bad_cache_plugins[$plugin['TextDomain']] = true;
 			}
 			if(array_key_exists($plugin['TextDomain'], $good_cache_plugins) && is_plugin_active($key)) { 
-				$good_cache_plugins[$plugin['TextDomain']] = true;
+				$good_cache_plugins[$plugin['TextDomain']][0] = true;
 			}
 			if($plugin['TextDomain']=='perfmatters' && is_plugin_active($key)) { $pfmatters = true; }
 			if($plugin['TextDomain']=='wp-optimize' && is_plugin_active($key)) { $wpoptimize = true; }
@@ -342,10 +342,10 @@ function accelera_export_in_csv()
 	if ($bad_cache_plugins["sg-cachepress"] && get_option('siteground_optimizer_compression_level', false) > 0 ) { // If SG + Compression level > 0
 		$bad_image_optimizers["siteground_image"] = true;
 	}
-	if ($good_cache_plugins["litespeed-cache"] && get_option('litespeed.conf.img_optm-auto', false) > 0 ) { // If LSC + Autocompression > 0
+	if ($good_cache_plugins["litespeed-cache"][0] && get_option('litespeed.conf.img_optm-auto', false) > 0 ) { // If LSC + Autocompression > 0
 		$bad_image_optimizers["litespeed_image"] = true;
 	}
-	if ($good_cache_plugins["swift-performance"] && $accelera_swiftoptions['optimize-uploaded-images'] > 0 ) { // If Swift + Autocompression > 0
+	if ($good_cache_plugins["swift-performance"][0] && $accelera_swiftoptions['optimize-uploaded-images'] > 0 ) { // If Swift + Autocompression > 0
 		$bad_image_optimizers["swift_image"] = true;
 	}
 	if ($wpoptimize && get_option('wp-optimize-autosmush', false) > 0 ) {
@@ -389,22 +389,25 @@ function accelera_export_in_csv()
 		$results_tasks[] = 'C'; 
 		$temp_results_tasks_auxiliar = "WP Engine";
 	}
-	
-	elseif (in_array(true,$good_cache_plugins)) { 
-		$results_tasks[] = 'A'; 
-		foreach ($good_cache_plugins as $key => $value) {
-            if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
-        }
-	}
-	
+
 	elseif (in_array(true,$bad_cache_plugins)) { 
 		$results_tasks[] = 'D'; 
 		foreach ($bad_cache_plugins as $key => $value) {
             if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
         }
 	}
+	
+	else {
+		foreach ($good_cache_plugins as $key => $value) {
+			if ( $value[0] == true ) { 
+				$temp_results_tasks_auxiliar = "$value[1]";
+				$results_tasks[] = 'A';
+				break;
+			}
+		}
+	}
 
-	else { $results_tasks[] = 'B'; }
+	if ($temp_results_tasks_auxiliar == "") { $results_tasks[] = 'B'; }
 
 	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 
@@ -463,8 +466,8 @@ function accelera_export_in_csv()
 
 	elseif ( //If SPAI, WP Rocket, AO or LiteSpeed are already minimizing
 		( $spai && $accelera_spaioptions->settings->areas->parse_css_files ) || 
-		( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['minify_css'] ) ||
-		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-css_min', false) > 0 ) ||
+		( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['minify_css'] ) ||
+		( $good_cache_plugins['litespeed-cache'][0] && get_option('litespeed.conf.optm-css_min', false) > 0 ) ||
 		( $ao && get_option('autoptimize_css') == "on" ) ||
 		( $assetcleanup && strpos($accelera_assetcleanoptions,'"minify_loaded_css":"1"') !== false ) ) {
 		$results_tasks[] = 'C';
@@ -475,15 +478,15 @@ function accelera_export_in_csv()
 			$results_tasks[] = 'B';
 			$temp_results_tasks_auxiliar = "Autoptimize";
 		}
-		elseif ( $good_cache_plugins["rocket"] ) {
+		elseif ( $good_cache_plugins["rocket"][0] ) {
 			$results_tasks[] = 'B';
 			$temp_results_tasks_auxiliar = "WP Rocket";
 		}
-		elseif ( $good_cache_plugins["litespeed-cache"] ) {
+		elseif ( $good_cache_plugins["litespeed-cache"][0] ) {
 			$results_tasks[] = 'B';
 			$temp_results_tasks_auxiliar = "LiteSpeed Cache";
 		}
-		elseif ( $good_cache_plugins["flying-press"] ) {
+		elseif ( $good_cache_plugins["flying-press"][0] ) {
 			$results_tasks[] = 'B';
 			$temp_results_tasks_auxiliar = "FlyingPress";
 		}
@@ -499,7 +502,7 @@ function accelera_export_in_csv()
 	}
 
 	else { // Minified, either because there's nothing to minimize or because of a bad plugin
-		if ($spai || $good_cache_plugins['rocket'] || $ao || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'C'; } // Ideally we would check if there's a bad plugin minimizing, to do
+		if ($spai || $good_cache_plugins['rocket'][0] || $ao || $good_cache_plugins["litespeed-cache"][0] || $good_cache_plugins["flying-press"][0] || $assetcleanup) { $results_tasks[] = 'C'; } // Ideally we would check if there's a bad plugin minimizing, to do
 		else $results_tasks[] = 'E';
 	}
 
@@ -543,19 +546,19 @@ function accelera_export_in_csv()
 	if($true_cloudflare) { $results_tasks[] = 'D'; }
 
 	elseif ( // If WP Rocket, AO or LiteSpeed are already minimizing  
-		( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['minify_js'] ) ||
-		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-js_min', false) > 0 ) ||
+		( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['minify_js'] ) ||
+		( $good_cache_plugins['litespeed-cache'][0] && get_option('litespeed.conf.optm-js_min', false) > 0 ) ||
 		( $ao && get_option('autoptimize_js') == "on" ) ||
 		( $assetcleanup && strpos($accelera_assetcleanoptions,'"minify_loaded_js":"1"') !== false ) ) {
 		$results_tasks[] = 'C';
 	}
 
 	elseif (how_many_unminified_js_files($home_url_body,$thedomain,4) > 0) { // Unminified
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'B'; }
+		if ($ao || $good_cache_plugins["rocket"][0] || $good_cache_plugins["litespeed-cache"][0] || $good_cache_plugins["flying-press"][0] || $assetcleanup) { $results_tasks[] = 'B'; }
 		else $results_tasks[] = 'A';
 	}
 	else { // Minified, either because there's nothing to minimize or because of a bad plugin
-		if ($ao || $good_cache_plugins["rocket"] || $good_cache_plugins["litespeed-cache"] || $good_cache_plugins["flying-press"] || $assetcleanup) { $results_tasks[] = 'C'; } // Ideally we would check if there's a bad plugin minimizing, to do
+		if ($ao || $good_cache_plugins["rocket"][0] || $good_cache_plugins["litespeed-cache"][0] || $good_cache_plugins["flying-press"][0] || $assetcleanup) { $results_tasks[] = 'C'; } // Ideally we would check if there's a bad plugin minimizing, to do
 		else $results_tasks[] = 'E';
 	}
 
@@ -717,8 +720,8 @@ function accelera_export_in_csv()
 	}
 
 	// If WP Rocket/AO/LiteSpeed are already doing that, all good
-	if ( ( $good_cache_plugins['rocket'] && $accelera_wprocketoptions['defer_all_js'] ) ||
-		( $good_cache_plugins['litespeed-cache'] && get_option('litespeed.conf.optm-js_defer', false) > 0 ) ||
+	if ( ( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['defer_all_js'] ) ||
+		( $good_cache_plugins['litespeed-cache'][0] && get_option('litespeed.conf.optm-js_defer', false) > 0 ) ||
 		( $ao && get_option('autoptimize_js') == "on" && get_option('autoptimize_js_defer_not_aggregate') == "on" ) ||
 		( $ao && get_option('autoptimize_js') == "on" && get_option('autoptimize_js_aggregate') == "on" && !get_option('autoptimize_js_forcehead') ) ) {
 			$results_tasks[] = "B";
@@ -738,7 +741,7 @@ function accelera_export_in_csv()
 	$temp_results_tasks_auxiliar = "";
 
 	// Check whether WPRocket/Swift/LiteSpeed/HBbyWPR are installed and taking care of Heartbeat
-	if ( $good_cache_plugins['rocket'] ) {
+	if ( $good_cache_plugins['rocket'][0] ) {
 		if ( $accelera_wprocketoptions['control_heartbeat'] ) { $results_tasks[] = "C"; }
 		else {
 			$results_tasks[] = "B";
@@ -746,7 +749,7 @@ function accelera_export_in_csv()
 		}
 	}
 	
-	elseif ( $good_cache_plugins['litespeed-cache'] ) {
+	elseif ( $good_cache_plugins['litespeed-cache'][0] ) {
 		if ( ( get_option('litespeed.conf.misc-heartbeat_front', false) || get_option('litespeed.conf.misc-heartbeat_back', false) || get_option('litespeed.conf.misc-heartbeat_editor', false) ) > 0 ) {
 			$results_tasks[] = "C";
 		}
@@ -756,7 +759,7 @@ function accelera_export_in_csv()
 		}
 	}
 
-	elseif ( $good_cache_plugins['swift-performance'] ) {
+	elseif ( $good_cache_plugins['swift-performance'][0] ) {
 		if ( is_array(get_option( 'swift_performance_options', false )['disable-heartbeat']) ) {
 			$results_tasks[] = "C";
 		}
@@ -858,7 +861,7 @@ function accelera_export_in_csv()
 		}
 
 		elseif ( ( preg_match( "/fonts\.googleapis\.com\/css|<link[^>]*fonts\.gstatic\.com[^\"']*\.woff2.*?>/", $home_url_body ) ) ||
-		 ( $good_cache_plugins["litespeed-cache"] && get_option('litespeed.conf.optm-ggfonts_async', false ) ) ) {
+		 ( $good_cache_plugins["litespeed-cache"][0] && get_option('litespeed.conf.optm-ggfonts_async', false ) ) ) {
 			return true;
 		}
 
@@ -876,7 +879,7 @@ function accelera_export_in_csv()
 
 	if (isthere_gf($home_url_body,$good_cache_plugins,$my_theme)) $gf = true;
 	if (isthere_ga($home_url_body)) $ga = true;
-	if ($good_cache_plugins['rocket'] && $accelera_wprocketoptions['delay_js']) $wpr_delay = true;
+	if ($good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['delay_js']) $wpr_delay = true;
 
 	if ($wpr_delay || $flyingscripts) {
 		if ($gf && $ga) { $results_tasks[] = "D"; }
@@ -885,7 +888,7 @@ function accelera_export_in_csv()
 		else { $results_tasks[] = "A"; }
 	}
 
-	elseif ($good_cache_plugins['rocket']) {
+	elseif ($good_cache_plugins['rocket'][0]) {
 		if ($gf && $ga) { $results_tasks[] = "K"; }
 		elseif ($gf) { $results_tasks[] = "I"; }
 		elseif ($ga) { $results_tasks[] = "E"; }
@@ -1020,15 +1023,15 @@ function accelera_export_in_csv()
 		}
 
 		if ($dnsprefetch <= 2) { // If only <=2 dns-prefetch, needs to be done
-			if ( $good_cache_plugins['rocket'] ) {
+			if ( $good_cache_plugins['rocket'][0] ) {
 				$temp_results_tasks_auxiliar = "WP Rocket";
 				return "B";
 			}
-			elseif ( $good_cache_plugins['swift-performance'] ) {
+			elseif ( $good_cache_plugins['swift-performance'][0] ) {
 				$temp_results_tasks_auxiliar = "Swift Performance";
 				return "B";
 			}
-			elseif ( $good_cache_plugins['litespeed-cache'] ) {
+			elseif ( $good_cache_plugins['litespeed-cache'][0] ) {
 				$temp_results_tasks_auxiliar = "LiteSpeed Cache";
 				return "B";
 			}

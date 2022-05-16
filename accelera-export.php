@@ -390,24 +390,24 @@ function accelera_export_in_csv()
 		$temp_results_tasks_auxiliar = "WP Engine";
 	}
 
-	elseif (in_array(true,$bad_cache_plugins)) { 
+	elseif (in_array(true,$bad_cache_plugins)) { // Bad cache plugin?
 		$results_tasks[] = 'D'; 
 		foreach ($bad_cache_plugins as $key => $value) {
             if ( $value == true ) { $temp_results_tasks_auxiliar .= "$key\n"; }
         }
 	}
 	
-	else {
+	else { // Good cache plugin
 		foreach ($good_cache_plugins as $key => $value) {
 			if ( $value[0] == true ) { 
 				$temp_results_tasks_auxiliar = "$value[1]";
 				$results_tasks[] = 'A';
-				break;
+				break; // As soon as we have a good plugin, it's enough
 			}
 		}
 	}
 
-	if ($temp_results_tasks_auxiliar == "") { $results_tasks[] = 'B'; }
+	if ($temp_results_tasks_auxiliar == "") { $results_tasks[] = 'B'; } // The string will be empty if we didn't find any good or bad cache plugin
 
 	$results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;
 

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.9
+Version: 0.10
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -1051,6 +1051,14 @@ function accelera_export_in_csv()
 
 
 	/////**********************************************************************/////
+	///// Extra server info
+	/////**********************************************************************/////
+    $extra_server_info = array();
+    if ( isset( $_SERVER['SERVER_SOFTWARE'] )) {
+        $extra_server_info[] = $_SERVER['SERVER_SOFTWARE'];
+    }
+
+	/////**********************************************************************/////
 	///// Database export - helper functions
 	/////**********************************************************************/////
 	
@@ -1213,11 +1221,17 @@ function accelera_export_in_csv()
 
 	// Writing task results
 	fputcsv($file,$results_tasks);
-	fputcsv($file,$results_tasks_auxiliar);		
+	fputcsv($file,$results_tasks_auxiliar);
 		
 	// New line
 	fputcsv($file,array(''));
 
+	// Writing extra server info
+	fputcsv($file,$extra_server_info);
+
+	// New line
+	fputcsv($file,array(''));
+	
 	// Writing DB headers
 	fputcsv($file,$dbheaders);
 

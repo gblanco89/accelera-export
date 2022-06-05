@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.10
+Version: 0.11
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later
@@ -1164,7 +1164,7 @@ function accelera_export_in_csv()
 		$termmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->termmeta" );
 		$termrelation_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->term_relationships" );
 		$options_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->options" );
-		
+
 		// Particular items totals
 		$revisions = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
 		$orphaned_postmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->postmeta WHERE post_id NOT IN (SELECT ID FROM $wpdb->posts)" );

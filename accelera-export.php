@@ -1154,48 +1154,56 @@ function accelera_export_in_csv()
 	/////**********************************************************************/////
 
 	// Counting db totals
-	global $wpdb;
-	$posts_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts" );
-	$postmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->postmeta" );
-	$commentmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->commentmeta" );
-	$usersmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta" );
-	$termmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->termmeta" );
-	$termrelation_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->term_relationships" );
-	$options_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->options" );
-	
-	// Particular items totals
-	$revisions = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
-	$orphaned_postmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->postmeta WHERE post_id NOT IN (SELECT ID FROM $wpdb->posts)" );
-	$orphaned_commentmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)" );
-	$orphaned_usermeta = $wpdb->get_var( "SELECT COUNT(umeta_id) FROM $wpdb->usermeta WHERE user_id NOT IN (SELECT ID FROM $wpdb->users)" );
-	$orphaned_termmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->termmeta WHERE term_id NOT IN (SELECT term_id FROM $wpdb->terms)" );
-	$oembed = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(meta_id) FROM $wpdb->postmeta WHERE meta_key LIKE(%s)", '%_oembed_%' ) );
-	$acc_objectcache = accelera_object_cache_check();
-	$orphaned_termrelation = $wpdb->get_var( "SELECT COUNT(object_id) FROM $wpdb->term_relationships AS tr INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM $wpdb->posts)" ); // phpcs:ignore
-	// Duplicated postmeta
-	$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->postmeta GROUP BY post_id, meta_key, meta_value HAVING count > %d", 1 ) );
-	if ( is_array( $query ) ) {
-		$duplicated_postmeta = array_sum( array_map( 'intval', $query ) );
+	mysqli_report((MYSQLI_REPORT_ALL | MYSQLI_REPORT_STRICT) ^ MYSQLI_REPORT_INDEX); // Switch on exception mode instead of classic error reporting, to use try/catch, and ignoring INDEX errors
+	try { // PHP 8.X has an intermittent connection issue with the ‘null’ being provided in the port.
+		global $wpdb;
+		$posts_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts" );
+		$postmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->postmeta" );
+		$commentmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->commentmeta" );
+		$usersmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta" );
+		$termmeta_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->termmeta" );
+		$termrelation_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->term_relationships" );
+		$options_total = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->options" );
+		
+		// Particular items totals
+		$revisions = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
+		$orphaned_postmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->postmeta WHERE post_id NOT IN (SELECT ID FROM $wpdb->posts)" );
+		$orphaned_commentmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)" );
+		$orphaned_usermeta = $wpdb->get_var( "SELECT COUNT(umeta_id) FROM $wpdb->usermeta WHERE user_id NOT IN (SELECT ID FROM $wpdb->users)" );
+		$orphaned_termmeta = $wpdb->get_var( "SELECT COUNT(meta_id) FROM $wpdb->termmeta WHERE term_id NOT IN (SELECT term_id FROM $wpdb->terms)" );
+		$oembed = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(meta_id) FROM $wpdb->postmeta WHERE meta_key LIKE(%s)", '%_oembed_%' ) );
+		$acc_objectcache = accelera_object_cache_check();
+		$orphaned_termrelation = $wpdb->get_var( "SELECT COUNT(object_id) FROM $wpdb->term_relationships AS tr INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy != 'link_category' AND tr.object_id NOT IN (SELECT ID FROM $wpdb->posts)" ); // phpcs:ignore
+		// Duplicated postmeta
+		$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->postmeta GROUP BY post_id, meta_key, meta_value HAVING count > %d", 1 ) );
+		if ( is_array( $query ) ) {
+			$duplicated_postmeta = array_sum( array_map( 'intval', $query ) );
+		}
+		// Duplicated commentmeta
+		$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->commentmeta GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1 ) );
+		if ( is_array( $query ) ) {
+			$duplicated_commentmeta = array_sum( array_map( 'intval', $query ) );
+		}
+		// Duplicated usermeta
+		$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(umeta_id) AS count FROM $wpdb->usermeta GROUP BY user_id, meta_key, meta_value HAVING count > %d", 1 ) );
+		if ( is_array( $query ) ) {
+			$duplicated_usermeta = array_sum( array_map( 'intval', $query ) );
+		}
+		// Duplicated termmeta
+		$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->termmeta GROUP BY term_id, meta_key, meta_value HAVING count > %d", 1 ) );
+		if ( is_array( $query ) ) {
+			$duplicated_termmeta = array_sum( array_map( 'intval', $query ) );
+		}
+		// Autoloads size (in KB)
+		$autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
+		foreach($autoloads_result as $object=>$uno){
+			$autoloads = round($uno->autoload_size);
+		}
 	}
-	// Duplicated commentmeta
-	$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->commentmeta GROUP BY comment_id, meta_key, meta_value HAVING count > %d", 1 ) );
-	if ( is_array( $query ) ) {
-		$duplicated_commentmeta = array_sum( array_map( 'intval', $query ) );
-	}
-	// Duplicated usermeta
-	$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(umeta_id) AS count FROM $wpdb->usermeta GROUP BY user_id, meta_key, meta_value HAVING count > %d", 1 ) );
-	if ( is_array( $query ) ) {
-		$duplicated_usermeta = array_sum( array_map( 'intval', $query ) );
-	}
-	// Duplicated termmeta
-	$query = $wpdb->get_col( $wpdb->prepare( "SELECT COUNT(meta_id) AS count FROM $wpdb->termmeta GROUP BY term_id, meta_key, meta_value HAVING count > %d", 1 ) );
-	if ( is_array( $query ) ) {
-		$duplicated_termmeta = array_sum( array_map( 'intval', $query ) );
-	}
-	// Autoloads size (in KB)
-	$autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
-	foreach($autoloads_result as $object=>$uno){
-		$autoloads = round($uno->autoload_size);
+	catch (mysqli_sql_exception $e)	{
+		$revisions = $orphaned_postmeta = $duplicated_postmeta = $oembed = $orphaned_commentmeta = $duplicated_commentmeta = $orphaned_usermeta = $duplicated_usermeta = $orphaned_termmeta = $duplicated_termmeta = $orphaned_termrelation = $autoloads = 'ERROR';
+		$posts_total = $postmeta_total = $commentmeta_total = $usersmeta_total = $termmeta_total = $termrelation_total = 'ERROR';
+		unset ($e);
 	}
 
 	/////**********************************************************************/////

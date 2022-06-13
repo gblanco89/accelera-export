@@ -193,6 +193,9 @@ function accelera_export_in_csv()
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_HEADER, 1);
 	curl_setopt($ch, CURLOPT_ACCEPT_ENCODING, "");
+	if ( (version_compare(curl_version()["version"], '7.33.0') >= 0) ) {
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+	}
 	curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 	curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -681,8 +684,10 @@ function accelera_export_in_csv()
 				$a++;
 			} 
 			else {
-				preg_match( "/[0-9]+/", $cachectrl, $cache_control_value ); // We get the value of cache-control
-				if ($cache_control_value[0] < 10368000) { $a++; }; // If too low, mark it
+				if (preg_match( "/[0-9]+/", $cachectrl, $cache_control_value )) { // We get the value of cache-control, if it exists
+					if ($cache_control_value[0] < 10368000) { $a++; }; // If too low, mark it
+				}
+				else $a++; // If cache-control is not set, needs to be set
 			}
 		}
 	}

@@ -71,7 +71,7 @@ function accelera_export() {
 		} ?>
 
 		<div>
-			<p><?php _e( 'This is just the first step before exporting your site information. Please follow the next steps:<br>
+			<p><?php _e( 'This is just the first step before exporting your site information. Please follow the next steps:<br />
 				<ol>
 					<li>Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the information. <strong>Do not refresh or exit this page.</strong></li>
 					<li>Download the CSV in the next page.</li>

@@ -315,6 +315,7 @@ function accelera_export_in_csv()
 	$accelera_wpoptimizeoptions = get_option( 'wpo_cache_config', false ); // WP-Optimize
 	$accelera_jetpackmodules = get_option( 'jetpack_active_modules', false ); // Jetpack modules
 	$accelera_assetcleanoptions = get_option( 'wpassetcleanup_settings', false ); // Asset CleanUp
+	$accelera_pfmattersoptions = get_option( 'perfmatters_options', false ); // Perfmatters
 	
 
 	/////**********************************************************************/////
@@ -777,6 +778,17 @@ function accelera_export_in_csv()
 	}
 
 	elseif ( $heartbeatplugin ) { $results_tasks[] = "C"; }
+
+	elseif ( $pfmatters ) {
+		if ( (isset($accelera_pfmattersoptions["disable_heartbeat"] ) && !empty( $accelera_pfmattersoptions["disable_heartbeat"] )) ||
+		(isset($accelera_pfmattersoptions["heartbeat_frequency"] ) && !empty( $accelera_pfmattersoptions["heartbeat_frequency"] ))) {
+			$results_tasks[] = "C";
+		}
+		else {
+			$results_tasks[] = "B";
+			$temp_results_tasks_auxiliar = "Perfmatters";
+		}
+	}
 
 	else $results_tasks[] = "A"; // If no compatible plugin installed
 

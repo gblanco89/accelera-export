@@ -867,7 +867,7 @@ function accelera_export_in_csv()
 			return false;
 		}
 
-		elseif ( ( preg_match( "/fonts\.googleapis\.com\/css|<link[^>]*fonts\.gstatic\.com[^\"']*\.woff2.*?>/", $home_url_body ) ) ||
+		elseif ( ( preg_match( "/url[^\"']+fonts\.gstatic\.com[^\"']*\.ttf|fonts\.googleapis\.com\/css|<link[^>]*fonts\.gstatic\.com[^\"']*\.woff2.*?>/", $home_url_body ) ) ||
 		 ( $good_cache_plugins["litespeed-cache"][0] && get_option('litespeed.conf.optm-ggfonts_async', false ) ) ) {
 			return true;
 		}

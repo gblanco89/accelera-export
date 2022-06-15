@@ -57,7 +57,7 @@ function accelera_export() {
 	$plugins = get_plugins();
 
 	// Removing other annoying notices
-	echo '<style>.update-nag, .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
+	echo '<style>.update-nag, .notice-info:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
 	
 	?>
 	<div class="wrap">
@@ -65,7 +65,7 @@ function accelera_export() {
 		
 		<?php // Checking for conflicting plugins - NitroPack
 		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
-		<div class="notice notice-warning">
+		<div class="notice notice-warning accelera-notice">
 			<p>
 			<?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?>
 			</p>

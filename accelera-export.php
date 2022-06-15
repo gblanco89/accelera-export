@@ -122,7 +122,7 @@ function accelera_export_in_csv()
 	/////**********************************************************************/////
 	///// Preparations - theme and plugin definitions
 	/////**********************************************************************/////
-	$goodthemes = array('Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic');
+	$goodthemes = array( 'Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic' );
 	
 	$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
 	
@@ -150,11 +150,11 @@ function accelera_export_in_csv()
 	);
 
 	$good_cache_plugins = array(
-		'swift-performance' => array( false, 'Swift Performance'),
-		'rocket' => array (false, 'WP Rocket'),
-		'litespeed-cache' => array ( false, 'LiteSpeed Cache'),
-		'flying-press' => array (false, 'FlyingPress'),
-		'cache-enabler' => array(false, 'Cache Enabler'),
+		'swift-performance' => array( false, 'Swift Performance' ),
+		'rocket' => array ( false, 'WP Rocket' ),
+		'litespeed-cache' => array ( false, 'LiteSpeed Cache' ),
+		'flying-press' => array ( false, 'FlyingPress' ),
+		'cache-enabler' => array( false, 'Cache Enabler' ),
 	);
 
 	$bad_cache_plugins = array(
@@ -704,7 +704,7 @@ function accelera_export_in_csv()
 		if ( !empty($js_file) ) {
 			return $js_file;
 		} else {
-			return array('vacio');
+			return array( 'vacio' );
 		}
 	}
 
@@ -714,7 +714,7 @@ function accelera_export_in_csv()
 		if ( !empty($img_file) ) {
 			return $img_file;
 		} else {
-			return array('vacio');
+			return array( 'vacio' );
 		}
 	}
 
@@ -1302,8 +1302,8 @@ function accelera_export_in_csv()
 	/////**********************************************************************/////
 	///// Database export - building arrays to put in CSV
 	/////**********************************************************************/////
-	$dbheaders = array('Details', 'Count', '% of');
-	$dbtitles = array('Revisions','Orphaned Post Meta','Duplicated Post Meta','oEmbed Caches In Post Meta','Orphaned Comment Meta','Duplicated Comment Meta','Orphaned User Meta','Duplicated User Meta','Orphaned Term Meta','Duplicated Term Meta','Orphaned Term Relationship','Object Cache','Optimize Tables','Autoloads');
+	$dbheaders = array( 'Details', 'Count', '% of' );
+	$dbtitles = array( 'Revisions','Orphaned Post Meta','Duplicated Post Meta','oEmbed Caches In Post Meta','Orphaned Comment Meta','Duplicated Comment Meta','Orphaned User Meta','Duplicated User Meta','Orphaned Term Meta','Duplicated Term Meta','Orphaned Term Relationship','Object Cache','Optimize Tables','Autoloads' );
 	$variables_db = array(
 		'revisions' => '-',
 		'orphaned_postmeta' => '-',
@@ -1379,7 +1379,7 @@ function accelera_export_in_csv()
 	$file = fopen($upload_dir['basedir'].'/'.$filename,'w');
 
 	// Writing task headers
-	$taskheaders = array('Optimize images','File cache','Theme analysis','Minify CSS','Minify Javascript','Enable GZip compression','Update PHP version','Combine CSS','Combine JS','Leverage browser caching','Defer parsing of JS','Control Heartbeat API interval','Clean headers of website','Remove Capital P Dangit filter','Disable Self Pingbacks','External resources optimization','Preconnect to external sites','Ads analysis','Disable WP-Cron','Use HTTP/2','Apply DNS Prefetch');
+	$taskheaders = array( 'Optimize images','File cache','Theme analysis','Minify CSS','Minify Javascript','Enable GZip compression','Update PHP version','Combine CSS','Combine JS','Leverage browser caching','Defer parsing of JS','Control Heartbeat API interval','Clean headers of website','Remove Capital P Dangit filter','Disable Self Pingbacks','External resources optimization','Preconnect to external sites','Ads analysis','Disable WP-Cron','Use HTTP/2','Apply DNS Prefetch' );
 	fputcsv($file,$taskheaders);
 
 	// Writing task results
@@ -1387,13 +1387,13 @@ function accelera_export_in_csv()
 	fputcsv($file,$results_tasks_auxiliar);
 		
 	// New line
-	fputcsv($file,array(''));
+	fputcsv($file,array( '' ));
 
 	// Writing extra server info
 	fputcsv($file,$extra_server_info);
 
 	// New line
-	fputcsv($file,array(''));
+	fputcsv($file,array( '' ));
 	
 	// Writing DB headers
 	fputcsv($file,$dbheaders);
@@ -1401,17 +1401,17 @@ function accelera_export_in_csv()
 	// Writing DB results
 	for ($i = 0; $i < count($dbtitles); $i++) {
 		if ( !is_numeric($dbtotals[$i]) ) {
-			fputcsv($file,array($dbtitles[$i], $particular_totals[$i], $dbtotals[$i])); // Non-numeric values: Title of task + total in numbers + percentage
+			fputcsv($file,array( $dbtitles[$i], $particular_totals[$i], $dbtotals[$i] )); // Non-numeric values: Title of task + total in numbers + percentage
 		} else {
-			fputcsv($file,array($dbtitles[$i], $particular_totals[$i], format_percentage($particular_totals[$i], $dbtotals[$i]))); // Numeric values: Title of task + total in numbers + percentage
+			fputcsv($file,array( $dbtitles[$i], $particular_totals[$i], format_percentage($particular_totals[$i], $dbtotals[$i]) )); // Numeric values: Title of task + total in numbers + percentage
 		}
 	}
 
 	// New line
-	fputcsv($file,array(''));
+	fputcsv($file,array( '' ));
 	
 	// Writing plugin headers
-	$headers_pluginlist = array('S.No','Plugin Name','Description','Author','Active/Inactive','Current Version');
+	$headers_pluginlist = array( 'S.No','Plugin Name','Description','Author','Active/Inactive','Current Version' );
 	fputcsv($file, $headers_pluginlist);
 	
 	// Populating plugins list

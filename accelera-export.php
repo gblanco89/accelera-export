@@ -145,7 +145,7 @@ function accelera_export_in_csv()
 		'litespeed_image' => false, // Not text-domain, check to be made later
 		'swift_image' => false, // Not text-domain, check to be made later
 		'wp_optimize_image' => false, // Not text-domain, check to be made later
-		'jetpack_images' => false // Not text-domain, check to be made later
+		'jetpack_images' => false, // Not text-domain, check to be made later
 	);
 
 	$good_cache_plugins = array(
@@ -153,7 +153,7 @@ function accelera_export_in_csv()
 		'rocket' => array (false, 'WP Rocket'),
 		'litespeed-cache' => array ( false, 'LiteSpeed Cache'),
 		'flying-press' => array (false, 'FlyingPress'),
-		'cache-enabler' => array(false, 'Cache Enabler')
+		'cache-enabler' => array(false, 'Cache Enabler'),
 	);
 
 	$bad_cache_plugins = array(
@@ -167,7 +167,7 @@ function accelera_export_in_csv()
 		'a2-optimized' => false,
 		'sg-cachepress' => false,
 		'wpp' => false,
-		'wp_optimize_cache' => false // Not text-domain, check to be made later
+		'wp_optimize_cache' => false, // Not text-domain, check to be made later
 	);
 
 	$pagebuilders = array(
@@ -179,7 +179,7 @@ function accelera_export_in_csv()
 		'brizy' => false,
 		'visualcomposer' => false,
 		'cornerstone' => false,
-		'divi' => false
+		'divi' => false,
 	);
 	if ($my_theme->get( 'Name' ) == 'Divi') {$pagebuilders['divi']=true;}
 
@@ -1247,7 +1247,7 @@ function accelera_export_in_csv()
 		'commentmeta_total' => '-', 
 		'usersmeta_total' => '-', 
 		'termmeta_total' => '-',
-		'termrelation_total' => '-'
+		'termrelation_total' => '-',
 	); //Default as '-' in case we skip db check
 		
 	// Only execute the queries if we chose to not skip the db checks
@@ -1271,7 +1271,7 @@ function accelera_export_in_csv()
 		$variables_db['orphaned_termrelation'],
 		$variables_db['acc_objectcache'],
 		'To do',
-		$variables_db['autoloads']
+		$variables_db['autoloads'],
 	);
 	$dbtotals = array(
 		$variables_db['posts_total'],
@@ -1287,7 +1287,7 @@ function accelera_export_in_csv()
 		$variables_db['termrelation_total'],
 		'-',
 		'-',
-		'-'
+		'-',
 	);
 	
 

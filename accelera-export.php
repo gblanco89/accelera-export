@@ -64,13 +64,14 @@ function accelera_export() {
 		<h1>Accelera Export</h1>
 		
 		<?php // Checking for conflicting plugins - NitroPack
-		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		?>
 		<div class="notice notice-warning accelera-notice">
-			<p>
-			<?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?>
-			</p>
+			<p><?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?></p>
 		</div>
-		<?php } ?>
+		<?php
+		}
+		?>
 
 		<div>
 			<p>
@@ -79,13 +80,15 @@ function accelera_export() {
 					<li>Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the information. <strong>Do not refresh or exit this page.</strong></li>
 					<li>Download the CSV in the next page.</li>
 					<li>Send the CSV, with no modification, to <a href="mailto:support@accelera.site">support@accelera.site</a>.</li>
-				</ol>', 'accelera-export' ); ?>
+				</ol>', 'accelera-export' );
+			?>
 			</p>
 		</div>
 		
 		<a href="tools.php?page=accelera-export-csv" class="button button-primary">CSV Export</a>
 	</div>
-	<?php }
+	<?php
+	}
 
 
 /*

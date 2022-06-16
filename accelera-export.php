@@ -54,8 +54,6 @@ function accelera_export() {
 		  require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 	}
 
-	$plugins = get_plugins();
-
 	// Removing other annoying notices
 	echo '<style>.update-nag, .notice-info:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
 
@@ -184,7 +182,7 @@ function accelera_export_in_csv() {
 		'cornerstone' => false,
 		'divi' => false,
 	);
-	if ( $my_theme->get( 'Name' ) == 'Divi' ) {
+	if ( 'Divi' === $my_theme->get( 'Name' ) ) {
 		$pagebuilders['divi'] = true;
 	}
 
@@ -228,15 +226,15 @@ function accelera_export_in_csv() {
 		$home_url_headers = array_filter( $end_array ); // Final homepage headers
 
 		// Finding if HTTP2 also while I'm at it (can't do with wp_remote_get cause it only supports HTTP/1.1)
-		if ( $home_url_headers['server'] == 'cloudflare' ) { // If CF is active, we assume there's already HTTP2
+		if ( 'cloudflare' === $home_url_headers['server'] ) { // If CF is active, we assume there's already HTTP2
 			$http2_support = true;
 		} elseif ( defined( 'CURL_VERSION_HTTP2' ) && ( curl_version()['features'] & CURL_VERSION_HTTP2 ) !== 0 ) { // If Curl supports HTTP2
-			if ( $homeurl_headers_response !== false && strpos( $homeurl_headers_response, 'HTTP/2' ) === 0 ) {
+			if ( false !== $homeurl_headers_response && strpos( $homeurl_headers_response, 'HTTP/2' ) === 0 ) {
 				$http2_support = true;
 			} else {
 				$http2_support = false;
 			}
-		} elseif ( $_SERVER['SERVER_PROTOCOL'] == 'HTTP/2.0' ) { // If curl failed, try the PHP constant
+		} elseif ( 'HTTP/2.0' === $_SERVER['SERVER_PROTOCOL'] ) { // If curl failed, try the PHP constant
 			$http2_support = true;
 		} else {
 			$http2_support = false;
@@ -244,7 +242,7 @@ function accelera_export_in_csv() {
 
 		// Finding whether Cloudflare is configured through an integration
 		$true_cloudflare = false;
-		if ( $home_url_headers['server'] == 'cloudflare' && $home_url_headers['x-powered-by'] != 'wp engine' ) { // WP Engine? They don't give access to CF dashboard
+		if ( 'cloudflare' === $home_url_headers['server'] && 'wp engine' !== $home_url_headers['x-powered-by'] ) { // WP Engine? They don't give access to CF dashboard
 			$true_cloudflare = true;
 		}
 	}
@@ -266,17 +264,17 @@ function accelera_export_in_csv() {
 		foreach ( $plugins as $key=>$plugin ) {
 
 			// Checking image optimizers
-			if ( $plugin['TextDomain'] == 'shortpixel-adaptive-images' && is_plugin_active( $key ) ) {
+			if ( 'shortpixel-adaptive-images' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$spai = true;
 			}
-			if ( $plugin['TextDomain'] == 'shortpixel-image-optimiser' && is_plugin_active( $key ) ) {
+			if ( 'shortpixel-image-optimiser' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$spio = true;
 			}
-			if ( $plugin['TextDomain'] == 'autoptimize' && is_plugin_active( $key ) ) {
+			if ( 'autoptimize' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$ao = true;
 				$autoptimizeImgopt = get_option( 'autoptimize_imgopt_settings', false ); // This is set by Autoptimize version >= 2.5.0
 				if ( $autoptimizeImgopt ) {
-					if ( isset( $autoptimizeImgopt['autoptimize_imgopt_checkbox_field_1'] ) && $autoptimizeImgopt['autoptimize_imgopt_checkbox_field_1'] == '1' ) {
+					if ( isset( $autoptimizeImgopt['autoptimize_imgopt_checkbox_field_1'] ) && '1' == $autoptimizeImgopt['autoptimize_imgopt_checkbox_field_1'] ) {
 						$ao_images = true;
 					} else {
 						$ao_images = false;
@@ -301,19 +299,19 @@ function accelera_export_in_csv() {
 			if ( array_key_exists( $plugin['TextDomain'], $good_cache_plugins ) && is_plugin_active( $key ) ) {
 				$good_cache_plugins[ $plugin['TextDomain'] ][0] = true;
 			}
-			if ( $plugin['TextDomain'] == 'perfmatters' && is_plugin_active( $key ) ) {
+			if ( 'perfmatters' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$pfmatters = true;
 			}
-			if ( $plugin['TextDomain'] == 'wp-optimize' && is_plugin_active( $key ) ) {
+			if ( 'wp-optimize' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$wpoptimize = true;
 			}
-			if ( $plugin['TextDomain'] == 'heartbeat-control' && is_plugin_active( $key ) ) {
+			if ( 'heartbeat-control' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$heartbeatplugin = true;
 			}
-			if ( $plugin['TextDomain'] == 'jetpack' && is_plugin_active( $key ) ) {
+			if ( 'jetpack' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$jetpack = true;
 			}
-			if ( $plugin['TextDomain'] == 'wp-asset-clean-up' && is_plugin_active( $key ) ) {
+			if ( 'wp-asset-clean-up' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
 				$assetcleanup = true;
 			}
 
@@ -323,7 +321,7 @@ function accelera_export_in_csv() {
 			}
 
 			// Adding plugin to list except if it's Accelera Export
-			if ( $plugin['TextDomain'] != 'accelera-export' ) {
+			if ( 'accelera-export' !== $plugin['TextDomain'] ) {
 				$status = 'Inactive';
 				if ( is_plugin_active( $key ) ) {
 					$status = 'Active';
@@ -392,7 +390,7 @@ function accelera_export_in_csv() {
 	if ( in_array( true, $bad_image_optimizers ) ) {
         $results_tasks[] = 'E';
         foreach ( $bad_image_optimizers as $key => $value ) {
-            if ( $value == true ) {
+            if ( true === $value ) {
 				$temp_results_tasks_auxiliar .= "$key\n";
 			}
         }
@@ -431,13 +429,13 @@ function accelera_export_in_csv() {
 	} elseif ( in_array( true, $bad_cache_plugins ) ) { // Bad cache plugin?
 		$results_tasks[] = 'D';
 		foreach ( $bad_cache_plugins as $key => $value ) {
-            if ( $value == true ) {
+            if ( true === $value ) {
 				$temp_results_tasks_auxiliar .= "$key\n";
 			}
         }
 	} else { // Good cache plugin
 		foreach ( $good_cache_plugins as $key => $value ) {
-			if ( $value[0] == true ) {
+			if ( true === $value[0] ) {
 				$temp_results_tasks_auxiliar = "$value[1]";
 				$results_tasks[] = 'A';
 				break; // As soon as we have a good plugin, it's enough
@@ -445,7 +443,7 @@ function accelera_export_in_csv() {
 		}
 	}
 
-	if ( $temp_results_tasks_auxiliar == '' ) {
+	if ( '' == $temp_results_tasks_auxiliar ) {
 		$results_tasks[] = 'B';
 	} // The string will be empty if we didn't find any good or bad cache plugin
 
@@ -619,14 +617,14 @@ function accelera_export_in_csv() {
 	*/
 	$temp_results_tasks_auxiliar = '';
 
-	if ( $home_url_headers['content-encoding'] == 'br' ) {
+	if ( 'br' === $home_url_headers['content-encoding'] ) {
 		$results_tasks[] = 'D';
 	} else {
 		$the_curl_version = curl_version();
 		if ( ( version_compare( $the_curl_version['version'], '7.57.0' ) >= 0 ) && ( $the_curl_version['features'] & constant('CURL_VERSION_BROTLI' ) ) ) { // First we check that CURL supports brotli and it is active
-			if ( $home_url_headers['content-encoding'] == 'gzip' && $true_cloudflare ) { // If CF active and server has only Gzip
+			if ( 'gzip' === $home_url_headers['content-encoding'] && $true_cloudflare ) { // If CF active and server has only Gzip
 				$results_tasks[] = 'C';
-			} elseif ( $home_url_headers['content-encoding'] == 'gzip' ) {
+			} elseif ( 'gzip' === $home_url_headers['content-encoding'] ) {
 				$results_tasks[] = 'B';
 			} else {
 				$results_tasks[] = 'A';
@@ -725,7 +723,7 @@ function accelera_export_in_csv() {
 
 	// Let's check the actual cache-control for each asset
 	foreach ( $first_assets as $asset_url ) {
-		if ( $asset_url != 'vacio' ) {
+		if ( 'vacio' !== $asset_url ) {
 			$response_asset = wp_remote_get( $asset_url );
 			$cachectrl = wp_remote_retrieve_header( $response_asset, 'cache-control' );
 			if ( empty( $cachectrl ) ) { // If cache-control is not set, needs to be set
@@ -742,9 +740,9 @@ function accelera_export_in_csv() {
 		}
 	}
 
-	if ( $a > 0 && $acc_webserver != 'nginx' ) {
+	if ( $a > 0 && 'nginx' !== $acc_webserver ) {
 		$results_tasks[] = 'B';
-	} elseif ( $a > 0 && $acc_webserver == 'nginx' ) {
+	} elseif ( $a > 0 && 'nginx' === $acc_webserver ) {
 		$results_tasks[] = 'C';
 	} else {
 		$results_tasks[] = 'A';
@@ -932,7 +930,7 @@ function accelera_export_in_csv() {
 
 	// Check if we see fonts in the code
 	function isthere_gf( $home_url_body, $good_cache_plugins, $my_theme ) {
-		if ( ( $my_theme->get( 'Name' ) == 'Astra' ) && get_option( 'astra-settings', false )['load-google-fonts-locally'] ) { // If Astra is locally hosting fonts
+		if ( ( 'Astra' === $my_theme->get( 'Name' ) ) && get_option( 'astra-settings', false )['load-google-fonts-locally'] ) { // If Astra is locally hosting fonts
 			return false;
 		} elseif ( ( preg_match( "/url[^\"']+fonts\.gstatic\.com[^\"']*\.ttf|fonts\.googleapis\.com\/css|<link[^>]*fonts\.gstatic\.com[^\"']*\.woff2.*?>/", $home_url_body ) ) ||
 		 ( $good_cache_plugins['litespeed-cache'][0] && get_option( 'litespeed.conf.optm-ggfonts_async', false ) ) ) {
@@ -1073,7 +1071,7 @@ function accelera_export_in_csv() {
 	*/
 	$temp_results_tasks_auxiliar = '';
 
-	if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true ) { // Just check if the constant is defined
+	if ( defined( 'DISABLE_WP_CRON' ) && true === DISABLE_WP_CRON ) { // Just check if the constant is defined
 		$results_tasks[] = 'B';
 	} else {
 		$results_tasks[] = 'A';

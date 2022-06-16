@@ -11,14 +11,14 @@ Text Domain: accelera-export
 */
 
 function accelera_register_export_settings_page() {
-  add_submenu_page( 'tools.php', 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export', 'accelera_export' );
+  add_submenu_page( 'tools.php', 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export', 'accelera_export_intro' );
   add_submenu_page( null, 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export-csv', 'accelera_export_in_csv' );
 }
 add_action( 'admin_menu', 'accelera_register_export_settings_page' );
 
 // Add action links to plugin list
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_accelera_esport_action_links' );
-function add_accelera_esport_action_links( $links ) {
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_accelera_export_action_links' );
+function add_accelera_export_action_links( $links ) {
 	$settings_link = array( '<a href="' . admin_url( 'tools.php?page=accelera-export' ) . '">Export data</a>' );
 	return array_merge( $links, $settings_link );
 }
@@ -45,7 +45,7 @@ if ( ! function_exists( 'write_log' ) ) {
  ██║███████║   ██║       ███████║   ██║   ███████╗██║
  ╚═╝╚══════╝   ╚═╝       ╚══════╝   ╚═╝   ╚══════╝╚═╝
 */
-function accelera_export() {
+function accelera_export_intro() {
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}

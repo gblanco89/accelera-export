@@ -1,4 +1,16 @@
 <?php
+/**
+ * Module Name: Enable Brotli/Gzip compression
+ * Description: Checks the website and tells whether it's using Brotli (preferred) or Gzip or nothing.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = Compression not enabled
+ * @internal 'B' = Gzip enabled
+ * @internal 'C' = Gzip enabled + Cloudflare active
+ * @internal 'D' = Brotli enabled
+ */
+
 $temp_results_tasks_auxiliar = '';
 
 if ( 'br' === $home_url_headers['content-encoding'] ) {

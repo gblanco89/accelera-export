@@ -1,4 +1,12 @@
 <?php
+/**
+ * Outputs the first screen on Tools > Accelera Export.
+ *
+ * The function gives a short description on what to do and it also warns the user of possible conflicts with the export process.
+ *
+ * @since 1.0.0
+ */
+
 function accelera_export_intro() {
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -15,7 +23,8 @@ function accelera_export_intro() {
 	<div class="wrap">
 		<h1>Accelera Export</h1>
 
-		<?php // Checking for conflicting plugins - NitroPack
+		<?php
+		// If NitroPack installed, suggest to deactivate
 		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		?>
 		<div class="notice notice-warning accelera-notice">

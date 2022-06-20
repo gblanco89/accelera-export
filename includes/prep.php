@@ -1,4 +1,11 @@
 <?php
+/**
+ * Before starting with the checks, this makes all the preparations.
+ * Variables, getting some technical info, etc.
+ *
+ * @since 1.0.0
+ */
+
 if ( ! function_exists( 'get_plugins' ) ) {
     require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
@@ -7,10 +14,7 @@ if ( ! function_exists( 'plugins_api' ) ) {
         require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 }
 
-
-/////**********************************************************************/////
-///// Preparations - current theme
-/////**********************************************************************/////
+// Preparations - current theme
 if ( is_child_theme() ) {
     $my_theme = wp_get_theme()->parent();
 } else {
@@ -20,9 +24,7 @@ if ( is_child_theme() ) {
 write_log( 'Accelera Export - Step 1 completed' );
 
 
-/////**********************************************************************/////
-///// Preparations - theme and plugin definitions
-/////**********************************************************************/////
+// Preparations - theme and plugin definitions
 $goodthemes = array( 'Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic' );
 
 $spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
@@ -90,10 +92,7 @@ if ( 'Divi' === $my_theme->get( 'Name' ) ) {
 write_log( 'Accelera Export - Step 2 completed' );
 
 
-/////**********************************************************************/////
-///// Preparations - HTTP headers from homepage
-/////**********************************************************************/////
-
+// Preparations - HTTP headers from homepage
 // Preparing curl
 $ch = curl_init();
 curl_setopt( $ch, CURLOPT_URL, get_home_url() );
@@ -154,9 +153,7 @@ curl_close( $ch );
 write_log( 'Accelera Export - Step 3 completed' );
 
 
-/////**********************************************************************/////
-///// Preparations - Plugin list + checking each plugin against Accelera list
-/////**********************************************************************/////
+// Preparations - Plugin list + checking each plugin against Accelera list
 $pluginlist = array();
 $plugins = get_plugins();
 
@@ -236,9 +233,7 @@ if ( $plugins ) {
 write_log( 'Accelera Export - Step 4 completed' );
 
 
-/////**********************************************************************/////
-///// Preparations - Gathering plugins options
-/////**********************************************************************/////
+// Preparations - Gathering plugins options
 $accelera_spaioptions = get_option( 'short_pixel_ai_options', false ); // SPAI
 $accelera_wprocketoptions = get_option( 'wp_rocket_settings', false ); // WP Rocket
 $accelera_swiftoptions = get_option( 'swift_performance_options', false ); // Swift Performance
@@ -248,9 +243,7 @@ $accelera_assetcleanoptions = get_option( 'wpassetcleanup_settings', false ); //
 $accelera_pfmattersoptions = get_option( 'perfmatters_options', false ); // Perfmatters
 
 
-/////**********************************************************************/////
-///// Checks and populating $results_tasks, array of task results
-/////**********************************************************************/////
+// Checks and populating $results_tasks, array of task results
 $results_tasks = array();
 $results_tasks_auxiliar = array(); //2nd row on CSV
 $thedomain = preg_quote( parse_url( get_home_url() )['host'] ); // Website domain
@@ -258,9 +251,7 @@ $acc_webserver = strtolower( explode( '/', $_SERVER['SERVER_SOFTWARE'] )[0] ); /
 
 write_log( 'Accelera Export - Step 5 completed' );
 
-/////**********************************************************************/////
-///// Extra server info
-/////**********************************************************************/////
+// Extra server info
 $extra_server_info = array();
 if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
     $extra_server_info[] = $_SERVER['SERVER_SOFTWARE'];

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Module Name: Control Heartbeat API
+ * Description: Checks the website and tells whether the user needs to control the WordPress HeartBeat API.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = Heartbeat not controlled + no installed plugin can take care of this
+ * @internal 'B' = Heartbeat not controlled + installed plugin can take care of this
+ * @internal 'C' = Heartbeat controlled
+ */
+
 $temp_results_tasks_auxiliar = '';
 
 // Check whether WPRocket/Swift/LiteSpeed/HBbyWPR are installed and taking care of Heartbeat

@@ -1,9 +1,21 @@
 <?php
-/////**********************************************************************/////
-///// Database export - helper functions
-/////**********************************************************************/////
+/**
+ * Module Name: Database checker
+ * Description: Checks various aspects of the database
+ *
+ * @since 1.0.0
+ */
 
-// Percentage calculation function
+/**
+ * From a number and a total, returns the percentage, including '%'
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $current A number.
+ * @param mixed $total The total.
+ * @return string Returns the percentage taking the total with a trailing '%'.
+ * @return string Returns the total if the value is not numeric.
+ */
 function format_percentage( $current, $total ) {
     if ( is_numeric( $current ) || is_numeric( $total ) ) {
         return ( $total > 0 ? round( ( $current / $total ) * 100, 2 ) : 0 ) . '%';
@@ -12,7 +24,15 @@ function format_percentage( $current, $total ) {
     }
 }
 
-// Check if Persisent Object Cache is required
+/**
+ * Callback for `persistent_object_cache` health check.
+ *
+ * @since 1.0.0
+ *
+ * @return string 'A' if Pers. Object Cache is used.
+ * @return string 'B' if Pers. Object Cache should be used.
+ * @return string 'C' if Pers. Object Cache shouldn't be used.
+ */
 function accelera_object_cache_check() {
     $result = 'A';
 
@@ -28,7 +48,15 @@ function accelera_object_cache_check() {
     return 'B';
 }
 
-// Determine whether to suggest using a persistent object cache
+/**
+ * Determines whether to suggest using a persistent object cache.
+ *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return bool Whether to suggest using a persistent object cache.
+ */
 function acc_should_suggest_persistent_object_cache() {
     global $wpdb;
 
@@ -90,7 +118,15 @@ function acc_should_suggest_persistent_object_cache() {
     return false;
 }
 
-// Building and executing queries
+/**
+ * Executes all the queries to check the DB.
+ *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param array &$variables_db An array of various counters for database information
+ */
 function acc_queries( &$variables_db ) {
 
     global $wpdb;
@@ -145,10 +181,9 @@ function acc_queries( &$variables_db ) {
     }
 }
 
-
-/////**********************************************************************/////
-///// Database export - building arrays to put in CSV
-/////**********************************************************************/////
+/*
+* Database export - building arrays to put in CSV
+*/
 $dbheaders = array( 'Details', 'Count', '% of' );
 $dbtitles = array( 'Revisions', 'Orphaned Post Meta', 'Duplicated Post Meta', 'oEmbed Caches In Post Meta', 'Orphaned Comment Meta', 'Duplicated Comment Meta', 'Orphaned User Meta', 'Duplicated User Meta', 'Orphaned Term Meta', 'Duplicated Term Meta', 'Orphaned Term Relationship', 'Object Cache', 'Optimize Tables', 'Autoloads' );
 $variables_db = array(
@@ -171,7 +206,7 @@ $variables_db = array(
     'usersmeta_total' => '-',
     'termmeta_total' => '-',
     'termrelation_total' => '-',
-); //Default as '-' in case we skip db check
+); // Default as '-' in case we skip db check
 
 // Only execute the queries if we chose to not skip the db checks
 if ( isset( $_REQUEST['skip'] ) ) {
@@ -182,7 +217,7 @@ if ( isset( $_REQUEST['skip'] ) ) {
     acc_queries( $variables_db );
 }
 
-//Building arrays to parse later in the CSV
+// Building arrays to parse later in the CSV
 $particular_totals = array(
     $variables_db['revisions'],
     $variables_db['orphaned_postmeta'],

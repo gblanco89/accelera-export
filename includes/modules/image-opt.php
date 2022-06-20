@@ -1,4 +1,18 @@
 <?php
+/**
+ * Module Name: Image optimization
+ * Description: Checks the website and tells whether it's optimizing the images with the correct plugin.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = Only SPIO installed
+ * @internal 'B' = Only SPAI or AO installed
+ * @internal 'C' = SPIO + SPAI/AO installed
+ * @internal 'D' = No image optimization plugin installed
+ * @internal 'E' = Another image optimization plugin installed
+ * @internal 'F' = SPIO + SPAI + AO installed
+ */
+
 $temp_results_tasks_auxiliar = '';
 
 // First check for plugins that are not completely image optimizers

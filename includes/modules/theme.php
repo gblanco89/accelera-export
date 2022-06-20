@@ -1,4 +1,16 @@
 <?php
+/**
+ * Module Name: Theme analysis
+ * Description: Checks the website and tells whether it's using a correct theme and/or
+ * user needs to stop using a page builder.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = Approved
+ * @internal 'B' = Not approved
+ * @internal 'C' = Page builder installed
+ */
+
 if ( in_array( true, $pagebuilders ) ) {
     $results_tasks[] = 'C';
 } elseif ( in_array( $my_theme->get( 'Name' ), $goodthemes ) ) {

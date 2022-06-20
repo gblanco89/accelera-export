@@ -1,6 +1,26 @@
 <?php
+/**
+ * Module Name: Defer parsing of JS
+ * Description: Checks the website and tells whether the user needs to defer JS files.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = Not done
+ * @internal 'B' = Done
+ */
+
 $temp_results_tasks_auxiliar = '';
 
+/**
+ * Checks if the JS files are deferred
+ *
+ * @since 1.0.0
+ *
+ * @param string $home_url_body A string containing the whole body of the page.
+ * @param string $thedomain The domain of the website, without http(s) or www.
+ * @return string 'B' if we consider all JS files are deferred.
+ * @return string 'A' if we consider JS files are not deferred.
+ */
 function arejs_deferred( $home_url_body, $thedomain ) {
     $deferred = 0; // Counter of deferred
     $deferstring = "/defer='defer'|defer=\"defer\"/";
@@ -15,7 +35,7 @@ function arejs_deferred( $home_url_body, $thedomain ) {
         }
     }
     if ( count( $js_files[0] ) - $deferred <= 3 ) {
-        return 'B'; // Return if files are deferred
+        return 'B';
     } else {
         return 'A';
     }

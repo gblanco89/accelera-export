@@ -1,7 +1,10 @@
 <?php
-/////**********************************************************************/////
-///// Time to write to file
-/////**********************************************************************/////
+/**
+ * This part simply writes all the results to the CSV file
+ *
+ * @since 1.0.0
+ */
+
 $filename = time() . '_' . 'accelera-export.csv';
 //$filename = 'test.csv';
 $upload_dir = wp_upload_dir();

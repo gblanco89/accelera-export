@@ -12,6 +12,7 @@ Text Domain: accelera-export
 
 define( 'ACCELERA_EXPORT_PATH', plugin_dir_path( __FILE__ ) );
 
+// Register settings page
 function accelera_register_export_settings_page() {
   add_submenu_page( 'tools.php', 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export', 'accelera_export_intro' );
   add_submenu_page( null, 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export-csv', 'accelera_export_in_csv' );
@@ -38,10 +39,10 @@ if ( ! function_exists( 'write_log' ) ) {
     }
 }
 
-//1st step
+// 1st step
 require( ACCELERA_EXPORT_PATH . 'includes/intro.php' );
 
-//2nd step
+// 2nd step
 function accelera_export_in_csv() {
 	require( ACCELERA_EXPORT_PATH . 'includes/prep.php');
 

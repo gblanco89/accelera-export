@@ -1,12 +1,35 @@
 <?php
+/**
+ * Module Name: JS minification
+ * Description: Checks the website and tells whether the user needs to minify JS files.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = No Cloudflare + Not done + no installed plugin can do it
+ * @internal 'B' = No Cloudflare + Not done + good installed plugin can do it
+ * @internal 'C' = No Cloudflare + Done with a good plugin
+ * @internal 'D' = Cloudflare active
+ * @internal 'E' = No Cloudflare + Done with a bad plugin
+ */
+
 $temp_results_tasks_auxiliar = '';
 
+/**
+ * Counts how many unminified JS files the page has.
+ *
+ * Finds all local css files (except those .min.js). Regex looks for http(s)://subdomains.domain.com/whatever/blabla.(!min).js
+ *
+ * @since 1.0.0
+ *
+ * @param string $home_url_body A string containing the whole body of the page.
+ * @param string $thedomain The domain of the website, without http(s) or www.
+ * @param int $lines_per_file The number of lines per file accepted to be unminified.
+ * @return int The number of unminified files.
+ */
 function how_many_unminified_js_files( $home_url_body, $thedomain, $lines_per_file ) {
     $unminimized_js_files = 0;
 
-    // Find all local js files (except those .min.js). Regex looks for http(s)://subdomains.domain.com/whatever/blabla.(!min).js
     if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.js)/", $home_url_body, $js_files ) ) {
-        // Loop through all the local js files and count how many lines they have
         foreach ( $js_files[0] as $js_file ) {
             $linecount = 0;
             if ( $handle = fopen( $js_file, 'r' ) ) { // Open the js file
@@ -21,7 +44,7 @@ function how_many_unminified_js_files( $home_url_body, $thedomain, $lines_per_fi
             }
         }
     }
-    return $unminimized_js_files; // Return the number of files that we don't think are minified
+    return $unminimized_js_files;
 }
 
 if ( $true_cloudflare ) {
@@ -40,7 +63,7 @@ if ( $true_cloudflare ) {
     }
 }
 else { // Minified, either because there's nothing to minimize or because of a bad plugin
-    if ( $ao || $good_cache_plugins['rocket'][0] || $good_cache_plugins['litespeed-cache'][0] || $good_cache_plugins['flying-press'][0] || $assetcleanup ) { // Ideally we would check if there's a bad plugin minimizing, to do
+    if ( $ao || $good_cache_plugins['rocket'][0] || $good_cache_plugins['litespeed-cache'][0] || $good_cache_plugins['flying-press'][0] || $assetcleanup ) { // Ideally we would check if there's a bad plugin minimizing (@todo)
         $results_tasks[] = 'C';
     } else {
         $results_tasks[] = 'E';

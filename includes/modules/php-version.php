@@ -1,4 +1,14 @@
 <?php
+/**
+ * Module Name: Update PHP version
+ * Description: Checks the website and tells whether it's using an updated and accepted PHP version.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = PHP updated to latest version
+ * @internal 'B' = PHP needs update
+ */
+
 $temp_results_tasks_auxiliar = '';
 
 if ( version_compare( PHP_VERSION, '7.4.0', '>=' ) ) {

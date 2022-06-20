@@ -1,4 +1,15 @@
 <?php
+/**
+ * Module Name: Combine CSS/JS
+ * Description: Checks the website and tells whether the user needs to combine CSS/JS files
+ * based on HTTP/2.
+ *
+ * @since 1.0.0
+ *
+ * @internal 'A' = HTTP/1
+ * @internal 'B' = HTTP/2
+ */
+
 $temp_results_tasks_auxiliar = '';
 
 if ( $http2_support ) {

@@ -25,7 +25,7 @@ write_log( 'Accelera Export - Step 1 completed' );
 
 
 // Preparations - theme and plugin definitions
-$goodthemes = array( 'Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic' );
+$goodthemes = array( 'Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic', 'Meteor V3' );
 
 $spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
 

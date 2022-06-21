@@ -70,6 +70,9 @@ $bad_cache_plugins = array(
     'wp-super-cache' => false,
     'a2-optimized' => false,
     'sg-cachepress' => false,
+    'comet-cache' => false,
+    'hummingbird-performance' => false,
+    'hyper-cache' => false,
     'wpp' => false,
     'wp_optimize_cache' => false, // Not text-domain, check to be made later
 );

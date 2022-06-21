@@ -56,6 +56,10 @@ fclose( $file );
 // Final message
 $url = $upload_dir['baseurl'] . '/' . $filename;
 $message = "Site info exported successfully. Click <a href='" . $url . "' target='_blank'>here</a> to download your CSV. Or click <a href='tools.php?page=accelera-export'>here</a> to go back.";
+
+// Removing other annoying notices
+echo '<style>.update-nag, .notice-info:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
+
 echo '<div class="wrap"><h1>Accelera Export</h1><div class="notice notice-success"><p>' . $message . '</p></div></div>';
 
 write_log( 'Accelera Export - Step 12 completed' );

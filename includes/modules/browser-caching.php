@@ -18,9 +18,11 @@ $temp_results_tasks_auxiliar = '';
  *
  * @since 1.0.0
  *
- * @return string The 'style.css' of the theme
+ * @param string &$temp_results_tasks_auxiliar The string containing the second row of tasks (auxiliar).
+ * @return string The 'style.css' of the theme.
  */
-function return_first_css() {
+function return_first_css(&$temp_results_tasks_auxiliar) {
+    $temp_results_tasks_auxiliar .= get_template_directory_uri() . '/style.css' . "\n";
     return get_template_directory_uri() . '/style.css';
 }
 
@@ -31,11 +33,13 @@ function return_first_css() {
  *
  * @param string $home_url_body A string containing the whole body of the page.
  * @param string $thedomain The domain of the website, without http(s) or www.
- * @return string If no JS file found, returns 'vacio'.
- * @return string If one JS file is found, returns the full URL.
+ * @param string &$temp_results_tasks_auxiliar The string containing the second row of tasks (auxiliar).
+ * @return array If no JS file found, returns 'vacio'.
+ * @return array If one JS file is found, returns the full URL.
  */
-function return_first_js( $home_url_body, $thedomain ) {
+function return_first_js( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.js)/i", $home_url_body, $js_file );
+    $temp_results_tasks_auxiliar .= $js_file[0] . "\n";
     if ( ! empty( $js_file ) ) {
         return $js_file;
     } else {
@@ -52,11 +56,13 @@ function return_first_js( $home_url_body, $thedomain ) {
  *
  * @param string $home_url_body A string containing the whole body of the page.
  * @param string $thedomain The domain of the website, without http(s) or www.
- * @return string If no image file found, returns 'vacio'.
- * @return string If one image file is found, returns the full URL.
+ * @param string &$temp_results_tasks_auxiliar The string containing the second row of tasks (auxiliar).
+ * @return array If no image file found, returns 'vacio'.
+ * @return array If one image file is found, returns the full URL.
  */
-function return_first_img( $home_url_body, $thedomain ) {
+function return_first_img( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.(jpg|jpeg|png|gif))/i", $home_url_body, $img_file );
+    $temp_results_tasks_auxiliar .= $img_file[0] . "\n";
     if ( !empty( $img_file ) ) {
         return $img_file;
     } else {
@@ -64,7 +70,7 @@ function return_first_img( $home_url_body, $thedomain ) {
     }
 }
 
-$first_assets = array( return_first_css(), return_first_js( $home_url_body, $thedomain )[0], return_first_img( $home_url_body, $thedomain )[0] ); // Getting an array of the first asset of each type
+$first_assets = array( return_first_css($temp_results_tasks_auxiliar), return_first_js( $home_url_body, $thedomain, $temp_results_tasks_auxiliar )[0], return_first_img( $home_url_body, $thedomain, $temp_results_tasks_auxiliar )[0] ); // Getting an array of the first asset of each type
 $a = 0; //Counter of browser cache too low
 
 // Let's check the actual cache-control for each asset

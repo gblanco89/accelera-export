@@ -178,6 +178,7 @@ function acc_queries( &$variables_db ) {
     $query = $wpdb->get_results( "SELECT TABLE_NAME AS `Table`, ROUND(((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024),2) AS `Size` FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"$wpdb->dbname\" ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC LIMIT 5" );
     $variables_db['biggest_tables'] = ''; // Empty the default '-'
     for ( $i = 0; $i <= 4; $i++ ) {
+        $query[ $i ]->Table = str_replace( $wpdb->prefix, '', $query[ $i ]->Table);
         $variables_db['biggest_tables'] .= $query[ $i ]->Table . ' (' . $query[ $i ]->Size . ' MB)';
         if ( $i < 3 ) {
             $variables_db['biggest_tables'] .= ', ';

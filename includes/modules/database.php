@@ -174,6 +174,19 @@ function acc_queries( &$variables_db ) {
         $variables_db['duplicated_termmeta'] = array_sum( array_map( 'intval', $query ) );
     }
 
+    // 5 Biggest tables
+    $query = $wpdb->get_results( "SELECT TABLE_NAME AS `Table`, ROUND(((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024),2) AS `Size` FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"$wpdb->dbname\" ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC LIMIT 5" );
+    $variables_db['biggest_tables'] = ''; // Empty the default '-'
+    for ( $i = 0; $i <= 4; $i++ ) {
+        $variables_db['biggest_tables'] .= $query[ $i ]->Table . ' (' . $query[ $i ]->Size . ' MB)';
+        if ( $i < 3 ) {
+            $variables_db['biggest_tables'] .= ', ';
+        }
+        elseif ( 3 === $i ) {
+            $variables_db['biggest_tables'] .= ' and ';
+        }
+    }
+
     // Autoloads size (in KB)
     $autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
     foreach( $autoloads_result as $object=>$uno ){
@@ -185,7 +198,7 @@ function acc_queries( &$variables_db ) {
 * Database export - building arrays to put in CSV
 */
 $dbheaders = array( 'Details', 'Count', '% of' );
-$dbtitles = array( 'Revisions', 'Orphaned Post Meta', 'Duplicated Post Meta', 'oEmbed Caches In Post Meta', 'Orphaned Comment Meta', 'Duplicated Comment Meta', 'Orphaned User Meta', 'Duplicated User Meta', 'Orphaned Term Meta', 'Duplicated Term Meta', 'Orphaned Term Relationship', 'Object Cache', 'Optimize Tables', 'Autoloads' );
+$dbtitles = array( 'Revisions', 'Orphaned Post Meta', 'Duplicated Post Meta', 'oEmbed Caches In Post Meta', 'Orphaned Comment Meta', 'Duplicated Comment Meta', 'Orphaned User Meta', 'Duplicated User Meta', 'Orphaned Term Meta', 'Duplicated Term Meta', 'Orphaned Term Relationship', 'Object Cache', 'Biggest tables', 'Autoloads' );
 $variables_db = array(
     'revisions' => '-',
     'orphaned_postmeta' => '-',
@@ -206,6 +219,7 @@ $variables_db = array(
     'usersmeta_total' => '-',
     'termmeta_total' => '-',
     'termrelation_total' => '-',
+    'biggest_tables' => '-',
 ); // Default as '-' in case we skip db check
 
 // Only execute the queries if we chose to not skip the db checks
@@ -231,7 +245,7 @@ $particular_totals = array(
     $variables_db['duplicated_termmeta'],
     $variables_db['orphaned_termrelation'],
     $variables_db['acc_objectcache'],
-    'To do',
+    $variables_db['biggest_tables'],
     $variables_db['autoloads'],
 );
 $dbtotals = array(

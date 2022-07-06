@@ -17,7 +17,7 @@ function accelera_export_intro() {
 	}
 
 	// Removing other annoying notices
-	echo '<style>.update-nag, .notice-info:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
+	echo '<style>.update-nag, .notice-info:not(.accelera-notice), .notice-warning:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice { display: none !important; }</style>';
 
 	?>
 	<div class="wrap">

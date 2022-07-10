@@ -102,7 +102,19 @@ foreach ( $first_assets as $asset_url ) {
         if ( empty( $cachectrl ) ) { // If cache-control is not set, needs to be set
             $a++;
         } else {
-            if ( preg_match( "/[0-9]+/", $cachectrl, $cache_control_value ) ) { // We get the value of cache-control, if it exists
+			if ( is_array ( $cachectrl ) ) { // If there is more than one cache-control header, it will be an array.
+				foreach ( $cachectrl as $counter ) {
+					if ( preg_match( "/[0-9]+/", $counter, $cache_control_value ) ) {
+						if ( $cache_control_value[0] < 10368000 ) {
+                		    $a++; // If too low, mark it
+                		}
+						break; // Don't check more cache-control headers, because we already found a numeric one.
+					} else {
+             		   $a++; // If cache-control is not set, needs to be set
+            		}
+				}
+			}
+            elseif ( preg_match( "/[0-9]+/", $cachectrl, $cache_control_value ) ) { // We get the value of cache-control, if it exists
                 if ( $cache_control_value[0] < 10368000 ) {
                     $a++; // If too low, mark it
                 };

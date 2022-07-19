@@ -22,6 +22,9 @@ if ( $wpoptimize && $accelera_wpoptimizeoptions['enable_page_caching'] > 0 ) {
 if ( defined('WPE_CACHE_PLUGIN_BASE') ) { // WP Engine?
     $results_tasks[] = 'C';
     $temp_results_tasks_auxiliar = 'WP Engine';
+} elseif ( array_key_exists( 'x-kinsta-cache', $home_url_headers ) ) { // Kinsta?
+    $results_tasks[] = 'C';
+    $temp_results_tasks_auxiliar = 'Kinsta';
 } elseif ( in_array( true, $bad_cache_plugins ) ) { // Bad cache plugin?
     $results_tasks[] = 'D';
     foreach ( $bad_cache_plugins as $key => $value ) {

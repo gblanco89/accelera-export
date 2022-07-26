@@ -29,7 +29,7 @@ $temp_results_tasks_auxiliar = '';
 function how_many_unminified_css_files( $home_url_body, $thedomain, $lines_per_file ) {
     $unminimized_css_files = 0;
 
-    if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.css)/", $home_url_body, $css_files ) ) {
+    if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.css(?![a-zA-Z0-9]))/", $home_url_body, $css_files ) ) {
         foreach( $css_files[0] as $css_file ) {
             $linecount = 0;
             if ( $handle = fopen( $css_file, 'r' ) ) { // Open the CSS file

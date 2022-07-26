@@ -29,7 +29,7 @@ $temp_results_tasks_auxiliar = '';
 function how_many_unminified_js_files( $home_url_body, $thedomain, $lines_per_file ) {
     $unminimized_js_files = 0;
 
-    if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.js)/", $home_url_body, $js_files ) ) {
+    if ( preg_match_all( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*(?<!\.min)\.js(?![a-zA-Z0-9]))/", $home_url_body, $js_files ) ) {
         foreach ( $js_files[0] as $js_file ) {
             $linecount = 0;
             if ( $handle = fopen( $js_file, 'r' ) ) { // Open the js file

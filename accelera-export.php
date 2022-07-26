@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for Accelera Assessment service
-Version: 0.23
+Version: 0.24
 Author: Accelera
 Author URI: https://accelera.autoptimize.com
 License: GPLv2 or later

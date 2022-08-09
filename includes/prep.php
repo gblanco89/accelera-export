@@ -264,4 +264,4 @@ else {
     $extra_server_info[] = '';
 }
 
-$extra_server_info[] = $thedomain; // Website domain
+$extra_server_info[] = get_home_url(); // Website URL

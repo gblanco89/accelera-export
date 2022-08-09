@@ -39,8 +39,8 @@ function return_first_css(&$temp_results_tasks_auxiliar) {
  */
 function return_first_js( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.js)/i", $home_url_body, $js_file );
-    $temp_results_tasks_auxiliar .= $js_file[0] . "\n";
     if ( ! empty( $js_file ) ) {
+        $temp_results_tasks_auxiliar .= $js_file[0] . "\n";
         return $js_file;
     } else {
         return array( 'vacio' );
@@ -62,8 +62,8 @@ function return_first_js( $home_url_body, $thedomain, &$temp_results_tasks_auxil
  */
 function return_first_img( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.(jpg|jpeg|png|gif))/i", $home_url_body, $img_file );
-    $temp_results_tasks_auxiliar .= $img_file[0] . "\n";
     if ( !empty( $img_file ) ) {
+        $temp_results_tasks_auxiliar .= $img_file[0] . "\n";
         return $img_file;
     } else {
         return array( 'vacio' );
@@ -83,8 +83,8 @@ function return_first_img( $home_url_body, $thedomain, &$temp_results_tasks_auxi
  */
 function return_first_svg( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     preg_match( "/(https?:\/\/([^\"']*\.)?{$thedomain}[^\"']*\.svg)/i", $home_url_body, $img_file );
-    $temp_results_tasks_auxiliar .= $img_file[0] . "\n";
     if ( !empty( $img_file ) ) {
+        $temp_results_tasks_auxiliar .= $img_file[0] . "\n";
         return $img_file;
     } else {
         return array( 'vacio' );

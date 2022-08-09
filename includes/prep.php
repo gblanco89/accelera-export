@@ -256,6 +256,12 @@ write_log( 'Accelera Export - Step 5 completed' );
 
 // Extra server info
 $extra_server_info = array();
-if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
+
+if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) { // Web server
     $extra_server_info[] = $_SERVER['SERVER_SOFTWARE'];
 }
+else {
+    $extra_server_info[] = '';
+}
+
+$extra_server_info[] = $thedomain; // Website domain

@@ -11,7 +11,7 @@
 
 $temp_results_tasks_auxiliar = '';
 
-if ( version_compare( PHP_VERSION, '7.4.0', '>=' ) ) {
+if ( version_compare( PHP_VERSION, '8.0.0', '>=' ) ) {
     $results_tasks[] = 'A';
 } else {
     $temp_results_tasks_auxiliar = PHP_VERSION;

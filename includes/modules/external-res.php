@@ -56,7 +56,7 @@ function isthere_gf( $home_url_body, $good_cache_plugins, $my_theme ) {
  * @return bool false if there are no Google Analytics loaded.
  */
 function isthere_ga( $home_url_body ) {
-    if ( preg_match( "/<script.*googletagmanager\.com\/gtag\/js\?id=[UAG]+-[0-9A-Z-]+(\"|')/", $home_url_body ) ) {
+    if ( preg_match( "/<script.*googletagmanager\.com\/gtag\/js\?id=[UAG]+-[0-9A-Z-]+(\"|')/s", $home_url_body ) ) {
         return true;
     } else {
         return false;

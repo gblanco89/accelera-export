@@ -60,6 +60,6 @@ $message = "Site info exported successfully. Click <a href='" . $url . "' target
 // Removing other annoying notices
 echo '<style>.update-nag, .notice-info:not(.accelera-notice), .notice-warning:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice, .sbi_notice, .notice:not(.accelera-notice) { display: none !important; }</style>';
 
-echo '<div class="wrap"><h1>Accelera Export</h1><div class="notice notice-success"><p>' . $message . '</p></div></div>';
+echo '<div class="wrap"><h1>Accelera Export</h1><div class="notice notice-success accelera-notice"><p>' . $message . '</p></div></div>';
 
 write_log( 'Accelera Export - Step 12 completed' );

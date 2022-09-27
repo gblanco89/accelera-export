@@ -24,7 +24,7 @@ $temp_results_tasks_auxiliar = '';
  */
 function arejs_deferred( $home_url_body, $thedomain, &$temp_results_tasks_auxiliar ) {
     $deferred = 0; // Counter of deferred
-    $deferstring = "/defer='defer'|defer=\"defer\"/";
+    $deferstring = "/defer='defer'|defer=\"defer\"|defer=\"\"|defer=''|defer\s/";
 
     // Find all local js files
     preg_match_all( "/<script.*{$thedomain}.*\.js.*<\/script>/i", $home_url_body, $js_files );

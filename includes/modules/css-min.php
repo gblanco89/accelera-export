@@ -79,11 +79,7 @@ if ( $true_cloudflare ) {
         $results_tasks[] = 'A';
     }
 } else { // Minified, either because there's nothing to minimize or because of a bad plugin
-    if ( $spai || $good_cache_plugins['rocket'][0] || $ao || $good_cache_plugins['litespeed-cache'][0] || $good_cache_plugins['flying-press'][0] || $assetcleanup ) { // Ideally we would check if there's a bad plugin minimizing (@todo)
-        $results_tasks[] = 'C';
-    } else {
-        $results_tasks[] = 'E';
-    }
+    $results_tasks[] = 'E';
 }
 
 $results_tasks_auxiliar[] = $temp_results_tasks_auxiliar;

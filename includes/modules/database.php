@@ -18,7 +18,7 @@
  */
 function format_percentage( $current, $total ) {
     if ( is_numeric( $current ) || is_numeric( $total ) ) {
-        return ( $total > 0 ? round( ( $current / $total ) * 100, 2 ) : 0 ) . '%';
+        return ( $total > 0 ? round( ( $current / $total ) * 100, 2 ) : 0 );
     } else {
         return $total;
     }

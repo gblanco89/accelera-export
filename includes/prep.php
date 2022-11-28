@@ -66,7 +66,6 @@ $bad_cache_plugins = array(
     'wphb' => false,
     'nitropack' => false,
     'wp-fastest-cache' => false,
-    'cache-enabler' => false,
     'wp-super-cache' => false,
     'a2-optimized' => false,
     'sg-cachepress' => false,

@@ -27,7 +27,7 @@ write_log( 'Accelera Export - Step 1 completed' );
 // Preparations - theme and plugin definitions
 $goodthemes = array( 'Twenty Nineteen', 'Twenty Twenty', 'Twenty Twenty-One', 'Neve', 'Blocksy', 'Astra', 'OceanWP', 'Storefront', 'Suki', 'Kadence', 'Mesmerize', 'MagazineWP', 'Acabado', 'Extra', 'Genesis', 'GeneratePress', 'Button Theme', 'Basic', 'Meteor V3', 'Catch FSE', 'Twenty Twenty-Two', 'Grigora Blocks', 'Archeo', 'Ona', 'Avant-Garde', 'Skatepark', 'Wabi', 'Livro', 'Bricksy', 'WOWMALL', 'Tove', 'Quadrat', 'Mayland (Blocks)', 'Nutmeg', 'Blockbase', 'Naledi', 'Churel', 'Eksell', 'Hansen', 'GT Basic', 'Phoenix', 'Artpop', 'Empt Lite', 'Blank Canvas' );
 
-$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = false;
+$spai = $spio = $ao_images = $ao = $pfmatters = $wpoptimize = $heartbeatplugin = $flyingscripts = $jetpack = $assetcleanup = $oxygen = false;
 
 $bad_image_optimizers = array(
     'wp-smushit' => false,
@@ -218,6 +218,9 @@ if ( $plugins ) {
         // Checking page builders
         if ( array_key_exists( $plugin['TextDomain'], $pagebuilders ) && is_plugin_active( $key ) ) {
             $pagebuilders[ $plugin['TextDomain'] ] = true;
+        }
+        if ( 'oxygen' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
+            $oxygen = true;
         }
 
         // Adding plugin to list except if it's Accelera Export

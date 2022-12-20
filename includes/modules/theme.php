@@ -9,9 +9,12 @@
  * @internal 'A' = Approved
  * @internal 'B' = Not approved
  * @internal 'C' = Page builder installed
+ * @internal 'D' = Oxygen installed
  */
 
-if ( in_array( true, $pagebuilders ) ) {
+if ( $oxygen ) {
+    $results_tasks[] = 'D';
+} elseif ( in_array( true, $pagebuilders ) ) {
     $results_tasks[] = 'C';
 } elseif ( in_array( $my_theme->get( 'Name' ), $goodthemes ) ) {
     $results_tasks[] = 'A';

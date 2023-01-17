@@ -11,6 +11,7 @@
  * @internal 'D' = No image optimization plugin installed
  * @internal 'E' = Another image optimization plugin installed
  * @internal 'F' = SPIO + SPAI + AO installed
+ * @internal 'G' = SPAI/AO installed + Another image optimization plugin installed
  */
 
 $temp_results_tasks_auxiliar = '';
@@ -33,7 +34,12 @@ if ( $jetpack && in_array( 'photon', $accelera_jetpackmodules ) ) {
 }
 
 if ( in_array( true, $bad_image_optimizers ) ) {
-    $results_tasks[] = 'E';
+    if ( $spai || $ao_images ) {
+        $results_tasks[] = 'G';
+    }
+    else {
+        $results_tasks[] = 'E';
+    }
     foreach ( $bad_image_optimizers as $key => $value ) {
         if ( true === $value ) {
             $temp_results_tasks_auxiliar .= "$key\n";

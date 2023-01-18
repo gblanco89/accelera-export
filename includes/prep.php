@@ -58,6 +58,7 @@ $good_cache_plugins = array(
     'litespeed-cache' => array( false, 'LiteSpeed Cache' ),
     'flying-press' => array( false, 'FlyingPress' ),
     'cache-enabler' => array( false, 'Cache Enabler' ),
+    'spinupwp' => array( false, 'SpinupWP' ),
 );
 
 $bad_cache_plugins = array(

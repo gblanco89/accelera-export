@@ -10,6 +10,7 @@
  * @internal 'C' = No Cloudflare + Done with a good plugin
  * @internal 'D' = Cloudflare active
  * @internal 'E' = No Cloudflare + Done with a bad plugin
+ * @internal 'F' = Cloudflare active through hosting integration
  */
 
 $temp_results_tasks_auxiliar = '';
@@ -47,7 +48,9 @@ function how_many_unminified_js_files( $home_url_body, $thedomain, $lines_per_fi
     return $unminimized_js_files;
 }
 
-if ( $true_cloudflare ) {
+if ( array_key_exists( 'ki-cf-cache-status', $home_url_headers ) ) {
+    $results_tasks[] = 'F';
+} elseif ( $true_cloudflare ) {
     $results_tasks[] = 'D';
 } elseif ( // If WP Rocket, AO or LiteSpeed are already minimizing
     ( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['minify_js'] ) ||

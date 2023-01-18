@@ -10,6 +10,7 @@
  * @internal 'C' = No Cloudflare + Done with a good plugin
  * @internal 'D' = Cloudflare active
  * @internal 'E' = No Cloudflare + Done with a bad plugin
+ * @internal 'F' = Cloudflare active through hosting integration
  */
 
 $temp_results_tasks_auxiliar = '';
@@ -47,7 +48,9 @@ function how_many_unminified_css_files( $home_url_body, $thedomain, $lines_per_f
     return $unminimized_css_files;
 }
 
-if ( $true_cloudflare ) {
+if ( array_key_exists( 'ki-cf-cache-status', $home_url_headers ) ) {
+    $results_tasks[] = 'F';
+} elseif ( $true_cloudflare ) {
     $results_tasks[] = 'D';
 } elseif ( //If SPAI, WP Rocket, AO or LiteSpeed are already minimizing
     ( $spai && $accelera_spaioptions->settings->areas->parse_css_files ) ||

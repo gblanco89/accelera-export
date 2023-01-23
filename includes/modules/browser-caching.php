@@ -8,6 +8,7 @@
  * @internal 'A' = Done
  * @internal 'B' = Not done + not NGINX
  * @internal 'C' = Not done + NGINX
+ * @internal 'D' = Unknown because some of the assets are inaccessible
  *
  */
 
@@ -93,6 +94,7 @@ function return_first_svg( $home_url_body, $thedomain, &$temp_results_tasks_auxi
 
 $first_assets = array( return_first_css($temp_results_tasks_auxiliar), return_first_js( $home_url_body, $thedomain, $temp_results_tasks_auxiliar )[0], return_first_img( $home_url_body, $thedomain, $temp_results_tasks_auxiliar )[0], return_first_svg( $home_url_body, $thedomain, $temp_results_tasks_auxiliar )[0] ); // Getting an array of the first asset of each type
 $a = 0; //Counter of browser cache too low
+$fourofour = 0; // Counter of 404s in resources
 
 // Let's check the actual cache-control for each asset
 foreach ( $first_assets as $asset_url ) {
@@ -126,10 +128,15 @@ foreach ( $first_assets as $asset_url ) {
                 }
             }
         }
+        else {
+            $fourofour++;
+        }
     }
 }
 
-if ( $a > 0 && 'nginx' !== $acc_webserver ) {
+if ( $fourofour > 0 ) {
+    $results_tasks[] = 'D';
+} elseif ( $a > 0 && 'nginx' !== $acc_webserver ) {
     $results_tasks[] = 'B';
 } elseif ( $a > 0 && 'nginx' === $acc_webserver ) {
     $results_tasks[] = 'C';

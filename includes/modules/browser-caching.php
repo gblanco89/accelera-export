@@ -98,28 +98,32 @@ $a = 0; //Counter of browser cache too low
 foreach ( $first_assets as $asset_url ) {
     if ( 'vacio' !== $asset_url ) {
         $response_asset = wp_remote_get( $asset_url );
-        $cachectrl = wp_remote_retrieve_header( $response_asset, 'cache-control' );
-        if ( empty( $cachectrl ) ) { // If cache-control is not set, needs to be set
-            $a++;
-        } else {
-			if ( is_array ( $cachectrl ) ) { // If there is more than one cache-control header, it will be an array.
-				foreach ( $cachectrl as $counter ) {
-					if ( preg_match( "/[0-9]+/", $counter, $cache_control_value ) ) {
-						if ( $cache_control_value[0] < 10368000 ) {
-                		    $a++; // If too low, mark it
-                		}
-						break; // Don't check more cache-control headers, because we already found a numeric one.
-					} else {
-             		   $a++; // If cache-control is not set, needs to be set
-            		}
-				}
-			}
-            elseif ( preg_match( "/[0-9]+/", $cachectrl, $cache_control_value ) ) { // We get the value of cache-control, if it exists
-                if ( $cache_control_value[0] < 10368000 ) {
-                    $a++; // If too low, mark it
-                };
+
+        $response_code = wp_remote_retrieve_response_code( $response_asset );
+        if ( preg_match( "/^2..$/", $response_code ) ) { // Only enter if the response code for the asset is 2XX
+            $cachectrl = wp_remote_retrieve_header( $response_asset, 'cache-control' );
+            if ( empty( $cachectrl ) ) { // If cache-control is not set, needs to be set
+                $a++;
             } else {
-                $a++; // If cache-control is not set, needs to be set
+                if ( is_array ( $cachectrl ) ) { // If there is more than one cache-control header, it will be an array.
+                    foreach ( $cachectrl as $counter ) {
+                        if ( preg_match( "/[0-9]+/", $counter, $cache_control_value ) ) {
+                            if ( $cache_control_value[0] < 10368000 ) {
+                                $a++; // If too low, mark it
+                            }
+                            break; // Don't check more cache-control headers, because we already found a numeric one.
+                        } else {
+                        $a++; // If cache-control is not set, needs to be set
+                        }
+                    }
+                }
+                elseif ( preg_match( "/[0-9]+/", $cachectrl, $cache_control_value ) ) { // We get the value of cache-control, if it exists
+                    if ( $cache_control_value[0] < 10368000 ) {
+                        $a++; // If too low, mark it
+                    };
+                } else {
+                    $a++; // If cache-control is not set, needs to be set
+                }
             }
         }
     }

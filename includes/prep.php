@@ -118,6 +118,7 @@ if ( ! curl_errno( $ch ) ) { // If there was no error or timeout
     $home_url_body = substr( $homeurl_headers_response, $home_url_header_size );
 
     // Making curl headers pretty
+    $home_url_headers_response_status = strstr( $home_url_headers_str, "\r\n", true ); // Placing the response status in a separate string
     $home_url_headers_str = strstr( $home_url_headers_str, "\r\n" ); // Removing response status + The seperator used in the Response Header is CRLF (Aka. \r\n)
     $home_url_headers_str = strtolower( $home_url_headers_str ); // Making string lowercase
     $home_url_headers = explode( "\r\n", $home_url_headers_str ); // Converting string to array key=>value (e.g. content-encoding => gzip)

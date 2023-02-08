@@ -216,6 +216,9 @@ if ( $plugins ) {
         if ( 'wp-asset-clean-up' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
             $assetcleanup = true;
         }
+        if ( 'flying-scripts' === $plugin['TextDomain'] && is_plugin_active( $key ) ) {
+            $flyingscripts = true;
+        }
 
         // Checking page builders
         if ( array_key_exists( $plugin['TextDomain'], $pagebuilders ) && is_plugin_active( $key ) ) {

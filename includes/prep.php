@@ -256,8 +256,13 @@ $accelera_pfmattersoptions = get_option( 'perfmatters_options', false ); // Perf
 // Checks and populating $results_tasks, array of task results
 $results_tasks = array();
 $results_tasks_auxiliar = array(); //2nd row on CSV
+
 $thedomain = preg_quote( parse_url( get_home_url() )['host'] ); // Website domain
+
 $acc_webserver = strtolower( explode( '/', $_SERVER['SERVER_SOFTWARE'] )[0] ); // Web server
+if ( 'flywheel' === $acc_webserver ) { // Flywheel modifies the server header into 'flywheel/X.Y.Z'; it's just nginx
+    $acc_webserver = 'nginx';
+}
 
 write_log( 'Accelera Export - Step 5 completed' );
 

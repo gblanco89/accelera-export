@@ -7,6 +7,7 @@
  *
  * @internal 'A' = Not done
  * @internal 'B' = Done
+ * @internal 'C' = Swift Performance doing it
  */
 
 $temp_results_tasks_auxiliar = '';
@@ -44,7 +45,9 @@ function arejs_deferred( $home_url_body, $thedomain, &$temp_results_tasks_auxili
 }
 
 // If WP Rocket/AO/LiteSpeed are already doing that, all good
-if ( ( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['defer_all_js'] ) ||
+if ( $good_cache_plugins['swift-performance'][0] && $accelera_swiftoptions['merge-scripts'] > 0 && $accelera_swiftoptions['async-scripts'] > 0 ) { // If Swift + Merge Scripts + Async
+    $results_tasks[] = 'C';
+} elseif ( ( $good_cache_plugins['rocket'][0] && $accelera_wprocketoptions['defer_all_js'] ) ||
     ( $good_cache_plugins['litespeed-cache'][0] && get_option( 'litespeed.conf.optm-js_defer', false ) > 0 ) ||
     ( $ao && get_option( 'autoptimize_js' ) == 'on' && get_option( 'autoptimize_js_defer_not_aggregate' ) == 'on' ) ||
     ( $ao && get_option( 'autoptimize_js' ) == 'on' && get_option( 'autoptimize_js_aggregate' ) == 'on' && ! get_option( 'autoptimize_js_forcehead' ) ) ) {

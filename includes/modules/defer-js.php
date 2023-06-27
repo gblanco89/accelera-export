@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Defer parsing of JS
  * Description: Checks the website and tells whether the user needs to defer JS files.

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Disable WP-Cron
  * Description: Checks whether WP-Cron needs to be replaced with a Real Cron.

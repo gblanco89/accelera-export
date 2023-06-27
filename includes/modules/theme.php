@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Theme analysis
  * Description: Checks the website and tells whether it's using a correct theme and/or

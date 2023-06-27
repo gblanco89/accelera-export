@@ -1,14 +1,16 @@
 <?php
 /*
 Plugin Name: Accelera Export
-description: Companion app for Accelera Assessment service
-Version: 0.36
+description: Companion app for the Website Speed-Up Audit service
+Version: 0.37
 Author: Accelera
-Author URI: https://accelera.autoptimize.com
+Author URI: https://accelera.site
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: accelera-export
 */
+
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 define( 'ACCELERA_EXPORT_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -58,7 +60,7 @@ function accelera_export_in_csv() {
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/defer-js.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/heartbeat.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/clean-headers.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/remove-capitalp.php');
+	require( ACCELERA_EXPORT_PATH . 'includes/modules/lazy-load.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/self-pingbacks.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/external-res.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/preconnect.php');
@@ -67,6 +69,7 @@ function accelera_export_in_csv() {
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/http-two.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/dns-prefetch.php');
 	require( ACCELERA_EXPORT_PATH . 'includes/modules/database.php');
+	require( ACCELERA_EXPORT_PATH . 'includes/modules/critical-css.php');
 
 	require( ACCELERA_EXPORT_PATH . 'includes/end.php');
 }

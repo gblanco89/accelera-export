@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Update PHP version
  * Description: Checks the website and tells whether it's using an updated and accepted PHP version.

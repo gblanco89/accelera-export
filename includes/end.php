@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * This part simply writes all the results to the CSV file
  *
@@ -11,7 +12,7 @@ $upload_dir = wp_upload_dir();
 $file = fopen( $upload_dir['basedir'] . '/' . $filename, 'w');
 
 // Writing task headers
-$taskheaders = array( 'Optimize images', 'File cache', 'Theme analysis', 'Minify CSS', 'Minify Javascript', 'Enable GZip compression', 'Update PHP version', 'Combine CSS', 'Combine JS', 'Leverage browser caching', 'Defer parsing of JS', 'Control Heartbeat API interval', 'Clean headers of website', 'Remove Capital P Dangit filter', 'Disable Self Pingbacks', 'External resources optimization', 'Preconnect to external sites', 'Ads analysis', 'Disable WP-Cron', 'Use HTTP/2', 'Apply DNS Prefetch' );
+$taskheaders = array( 'Optimize images', 'File cache', 'Theme analysis', 'Minify CSS', 'Minify Javascript', 'Enable GZip compression', 'Update PHP version', 'Combine CSS', 'Combine JS', 'Leverage browser caching', 'Defer parsing of JS', 'Control Heartbeat API interval', 'Clean headers of website', 'Lazy Load', 'Disable Self Pingbacks', 'External resources optimization', 'Preconnect to external sites', 'Ads analysis', 'Disable WP-Cron', 'Use HTTP/2', 'Apply DNS Prefetch' , 'Critical CSS' );
 fputcsv( $file, $taskheaders );
 
 // Writing task results

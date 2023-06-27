@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Leverage browser caching
  * Description: Checks the website and tells whether there's a need to leverage the browser caching.

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Control Heartbeat API
  * Description: Checks the website and tells whether the user needs to control the WordPress HeartBeat API.

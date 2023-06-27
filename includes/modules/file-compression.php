@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Enable Brotli/Gzip compression
  * Description: Checks the website and tells whether it's using Brotli (preferred) or Gzip or nothing.

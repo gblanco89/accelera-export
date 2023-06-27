@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Use HTTP/2
  * Description: Checks the website and tells whether it's using HTTP/2 or not.

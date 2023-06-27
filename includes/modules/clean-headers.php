@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Clean headers of website
  * Description: Checks the website and tells whether the WordPress headers have been cleaned or not.

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Before starting with the checks, this makes all the preparations.
  * Variables, getting some technical info, etc.

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Image optimization
  * Description: Checks the website and tells whether it's optimizing the images with the correct plugin.

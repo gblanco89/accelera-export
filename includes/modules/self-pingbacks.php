@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Disable self pingbacks
  * Description: Checks the website and tells whether the user needs to disable self pingbacks.

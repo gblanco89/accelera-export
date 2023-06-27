@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Module Name: Preconnect to external sites
  * Description: Checks the website and tells whether the user needs to preconnect to external sites.

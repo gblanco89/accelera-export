@@ -51,6 +51,7 @@ $bad_image_optimizers = array(
     'swift_image' => false, // Not text-domain, check to be made later
     'wp_optimize_image' => false, // Not text-domain, check to be made later
     'jetpack_images' => false, // Not text-domain, check to be made later
+    'webp-converter-for-media' => false,
 );
 
 $good_cache_plugins = array(

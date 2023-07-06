@@ -28,6 +28,13 @@ function is_siteground() {
     return (int) ( @file_exists( '/etc/yum.repos.d/baseos.repo' ) && @file_exists( '/Z' ) );
 }
 
+// Check if we are on Pantheon
+function is_pantheon(){
+	if ( isset( $_SERVER["HTTP_HOST"] ) && stripos( $_SERVER["HTTP_HOST"], 'pantheon' ) !== false ) {
+		return true;
+	}
+	return false;
+}
 
 if ( defined('WPE_CACHE_PLUGIN_BASE') ) { // WP Engine?
     $results_tasks[] = 'C';
@@ -38,6 +45,9 @@ if ( defined('WPE_CACHE_PLUGIN_BASE') ) { // WP Engine?
 } elseif ( is_siteground() ) { // SiteGround?
     $results_tasks[] = 'C';
     $temp_results_tasks_auxiliar = 'SiteGround';
+} elseif ( is_pantheon() ) { // Pantheon?
+    $results_tasks[] = 'C';
+    $temp_results_tasks_auxiliar = 'Pantheon';
 } elseif ( in_array( true, $bad_cache_plugins ) ) { // Bad cache plugin?
     $results_tasks[] = 'D';
     foreach ( $bad_cache_plugins as $key => $value ) {

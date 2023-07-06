@@ -2,7 +2,7 @@
 /*
 Plugin Name: Accelera Export
 description: Companion app for the Website Speed-Up Audit service
-Version: 0.37
+Version: 0.38
 Author: Accelera
 Author URI: https://accelera.site
 License: GPLv2 or later

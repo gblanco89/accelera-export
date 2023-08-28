@@ -41,7 +41,6 @@ function accelera_export_intro() {
 				<ol>
 					<li>Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the technical information. <strong>Do not refresh or exit this page.</strong></li>
 					<li>Download the CSV in the next page. Feel free to take a look at it, but <strong>do not add, remove or edit anything</strong> in it.</li>
-					<li>Send the CSV file to <a href="mailto:support@accelera.site">support@accelera.site</a>.</li>
 				</ol>', 'accelera-export' );
 			?>
 			</p>

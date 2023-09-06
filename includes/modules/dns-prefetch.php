@@ -40,9 +40,6 @@ function dnsprefetch_count( $home_url_body, $good_cache_plugins, &$temp_results_
         if ( $good_cache_plugins['rocket'][0] ) {
             $temp_results_tasks_auxiliar = 'WP Rocket';
             return 'B';
-        } elseif ( $good_cache_plugins['swift-performance'][0] ) {
-            $temp_results_tasks_auxiliar = 'Swift Performance';
-            return 'B';
         } elseif ( $good_cache_plugins['litespeed-cache'][0] ) {
             $temp_results_tasks_auxiliar = 'LiteSpeed Cache';
             return 'B';

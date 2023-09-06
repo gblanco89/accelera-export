@@ -55,21 +55,21 @@ $bad_image_optimizers = array(
 );
 
 $good_cache_plugins = array(
-    'swift-performance' => array( false, 'Swift Performance' ),
     'rocket' => array( false, 'WP Rocket' ),
     'litespeed-cache' => array( false, 'LiteSpeed Cache' ),
     'flying-press' => array( false, 'FlyingPress' ),
-    'cache-enabler' => array( false, 'Cache Enabler' ),
+    'wp-super-cache' => array( false, 'WP Super Cache' ),
     'spinupwp' => array( false, 'SpinupWP' ),
 );
 
 $bad_cache_plugins = array(
     'breeze' => false,
+    'swift-performance' => false,
     'w3-total-cache' => false,
     'wphb' => false,
     'nitropack' => false,
     'wp-fastest-cache' => false,
-    'wp-super-cache' => false,
+    'cache-enabler' => false,
     'a2-optimized' => false,
     'sg-cachepress' => false,
     'comet-cache' => false,

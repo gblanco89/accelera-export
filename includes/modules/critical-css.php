@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
  *
  * @since 1.0.0
  *
- * @internal 'A' = Critical CSS is already in place thanks to Jetpack Boost, Critical CSS For WP, LiteSpeed Cache, ShortPixel Critical CSS, Autoptimize, WP Rocket or Swift Perfromance
+ * @internal 'A' = Critical CSS is already in place thanks to Jetpack Boost, Critical CSS For WP, LiteSpeed Cache, ShortPixel Critical CSS, Autoptimize or WP Rocket
  * @internal 'B' = Critical CSS is not done yet, but there is a plugin active from the list above that can do this.
  * @internal 'C' = Critical CSS is not done yet and there is no plugin active from the list above that can do this.
  * @internal 'D' = Critical CSS is done, but not thanks to one of the plugins below.
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
 
 class Accelera_Critical_Css{
 
-	var $plugins 			= ['jetpack-boost/jetpack-boost.php','critical-css-for-wp/critical-css-for-wp.php','litespeed-cache/litespeed-cache.php','swift-performance-lite/performance.php','shortpixel-critical-css/shortpixel-critical-css.php','autoptimize/autoptimize.php','wp-rocket/wp-rocket.php'];
+	var $plugins 			= ['jetpack-boost/jetpack-boost.php','critical-css-for-wp/critical-css-for-wp.php','litespeed-cache/litespeed-cache.php','shortpixel-critical-css/shortpixel-critical-css.php','autoptimize/autoptimize.php','wp-rocket/wp-rocket.php'];
 	var $result_task 		= 'C';
 	var $auxiliar_task 		= '';
 	var $active_plugins 	= [];
@@ -93,9 +93,6 @@ class Accelera_Critical_Css{
 			case 'litespeed-cache/litespeed-cache.php':
 				return $this->litespeed_cache();
 
-			case 'swift-performance-lite/performance.php':
-				return $this->swift_performance_lite();
-
 			case 'shortpixel-critical-css/shortpixel-critical-css.php':
 				return $this->shortpixel_critical_css();
 
@@ -145,20 +142,6 @@ class Accelera_Critical_Css{
 		if( $api_key && $css_async ){
 
 			return 'A';
-		}
-
-		return 'B';
-	}
-
-	function swift_performance_lite(){
-		$options = get_option( 'swift_performance_options' );
-
-		if( $options ){
-
-			if( isset( $options['critical-css'] ) && $options['critical-css'] == "1" && isset( $options['merge-styles'] ) && $options['merge-styles'] == "1" ){
-
-				return 'A';
-			}
 		}
 
 		return 'B';

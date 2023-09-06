@@ -24,7 +24,7 @@ if ( $bad_cache_plugins['sg-cachepress'] && get_option( 'siteground_optimizer_co
 if ( $good_cache_plugins['litespeed-cache'][0] && get_option( 'litespeed.conf.img_optm-auto', false ) > 0 ) { // If LSC + Autocompression > 0
     $bad_image_optimizers['litespeed_image'] = true;
 }
-if ( $good_cache_plugins['swift-performance'][0] && $accelera_swiftoptions['optimize-uploaded-images'] > 0 ) { // If Swift + Autocompression > 0
+if ( $bad_cache_plugins['swift-performance'][0] && $accelera_swiftoptions['optimize-uploaded-images'] > 0 ) { // If Swift + Autocompression > 0
     $bad_image_optimizers['swift_image'] = true;
 }
 if ( $wpoptimize && get_option( 'wp-optimize-autosmush', false ) > 0 ) {

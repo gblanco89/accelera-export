@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $temp_results_tasks_auxiliar = '';
 
-// Check whether WPRocket/Swift/LiteSpeed/HBbyWPR are installed and taking care of Heartbeat
+// Check whether WPRocket/LiteSpeed/HBbyWPR are installed and taking care of Heartbeat
 if ( $good_cache_plugins['rocket'][0] ) {
     if ( $accelera_wprocketoptions['control_heartbeat'] ) {
         $results_tasks[] = 'C';
@@ -27,13 +27,6 @@ if ( $good_cache_plugins['rocket'][0] ) {
     } else {
         $results_tasks[] = 'B';
         $temp_results_tasks_auxiliar = 'LiteSpeed Cache';
-    }
-} elseif ( $good_cache_plugins['swift-performance'][0] ) {
-    if ( is_array( get_option( 'swift_performance_options', false )['disable-heartbeat'] ) ) {
-        $results_tasks[] = 'C';
-    } else {
-        $results_tasks[] = 'B';
-        $temp_results_tasks_auxiliar = 'Swift Performance';
     }
 } elseif ( $heartbeatplugin ) {
     $results_tasks[] = 'C';

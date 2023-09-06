@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
  *
  * @since 1.0.0
  *
- * @internal 'A' = Lazy Load is done with SPAI, WP Rocket, Autoptimize, Swift Performance, LiteSpeed Cache, Jetpack Boost or Lazy Loader
+ * @internal 'A' = Lazy Load is done with SPAI, WP Rocket, Autoptimize, LiteSpeed Cache, Jetpack Boost or Lazy Loader
  * @internal 'B' = Lazy Load is not in place, but one of the previous possibilities can be done because the plugin is active. SPAI and Lazy Loader just need to be activated.
  * @internal 'C' = Lazy Load is not in place and nothing from above is available.
  * @internal 'D' = Lazy load is done but in another way or with another plugin.
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
 
 class Accelera_Lazy_Load{
 
-	var $spio_plugins 			= ['shortpixel-adaptive-images/short-pixel-ai.php','wp-rocket/wp-rocket.php','autoptimize/autoptimize.php','swift-performance-lite/performance.php','litespeed-cache/litespeed-cache.php','jetpack-boost/jetpack-boost.php','lazy-loading-responsive-images/lazy-load-responsive-images.php'];
+	var $spio_plugins 			= ['shortpixel-adaptive-images/short-pixel-ai.php','wp-rocket/wp-rocket.php','autoptimize/autoptimize.php','litespeed-cache/litespeed-cache.php','jetpack-boost/jetpack-boost.php','lazy-loading-responsive-images/lazy-load-responsive-images.php'];
 	var $result_task 		= 'C';
 	var $auxiliar_task 		= '';
 	var $spio_active_plugins 	= [];
@@ -98,9 +98,6 @@ class Accelera_Lazy_Load{
 			case 'autoptimize/autoptimize.php':
 				return $this->autoptimize();
 
-			case 'swift-performance-lite/performance.php':
-				return $this->swift_performance_lite();
-
 			case 'litespeed-cache/litespeed-cache.php':
 				return $this->litespeed_cache();
 
@@ -140,20 +137,6 @@ class Accelera_Lazy_Load{
 		if( isset( $options['autoptimize_imgopt_checkbox_field_3'] ) && $options['autoptimize_imgopt_checkbox_field_3'] == "1" ){
 
 			return 'A';
-		}
-
-		return 'B';
-	}
-
-	function swift_performance_lite(){
-		$options = get_option( 'swift_performance_options' );
-
-		if( $options ){
-
-			if( isset( $options['lazy-load-images'] ) && $options['lazy-load-images'] == "1" ){
-
-				return 'A';
-			}
 		}
 
 		return 'B';

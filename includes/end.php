@@ -56,7 +56,8 @@ fclose( $file );
 
 // Final message
 $url = $upload_dir['baseurl'] . '/' . $filename;
-$message = "Site info exported successfully. Click <a href='" . $url . "' target='_blank'>here</a> to download your CSV. Or click <a href='tools.php?page=accelera-export'>here</a> to go back.";
+$message = sprintf(__('Site info exported successfully. Click <a href="%s" target="_blank">here</a> to download your CSV. Or click <a href="tools.php?page=accelera-export">here</a> to go back.', 'accelera-export'), $url);
+
 
 // Removing other annoying notices
 echo '<style>.update-nag, .notice-info:not(.accelera-notice), .notice-warning:not(.accelera-notice), .updated, .error, .is-dismissible, .ngg_admin_notice, .sbi_notice, .notice:not(.accelera-notice) { display: none !important; }</style>';

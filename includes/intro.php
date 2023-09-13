@@ -22,14 +22,14 @@ function accelera_export_intro() {
 
 	?>
 	<div class="wrap">
-		<h1>Accelera Export</h1>
+		<h1><?php echo esc_html__( 'Accelera Export', 'accelera-export' ); ?></h1>
 
 		<?php
 		// If NitroPack installed, suggest to deactivate
 		if ( in_array( 'nitropack/main.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		?>
 		<div class="notice notice-warning accelera-notice">
-			<p><?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.' ); ?></p>
+			<p><?php _e( 'Hey! Looks like you have Nitropack installed and active. Please go to <a href="options-general.php?page=nitropack">Nitropack\'s settings</a> and enable Safe Mode. Then, return here and continue with the process.', 'accelera-export' ); ?></p>
 		</div>
 		<?php
 		}
@@ -37,16 +37,18 @@ function accelera_export_intro() {
 
 		<div>
 			<p>
-			<?php _e( 'This is just the first step before exporting your site information. Don\'t worry, we will only export technical information that is useful for the assessment report; no personal or private data is exported. Please follow the next steps:<br />
+			<?php _e( 'This is just the first step before exporting your site information. Don\'t worry, we will only export technical information that is useful for the assessment report; no personal or private data is exported. Please follow the next steps:<br />', 'accelera-export' ); ?>
+
 				<ol>
-					<li>Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the technical information. <strong>Do not refresh or exit this page.</strong></li>
-					<li>Download the CSV in the next page. Feel free to take a look at it, but <strong>do not add, remove or edit anything</strong> in it.</li>
-				</ol>', 'accelera-export' );
-			?>
+					<li><?php _e( 'Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the technical information. <strong>Do not refresh or exit this page.</strong>' ,'accelera-export'); ?></li>
+					<li><?php _e( 'Download the CSV in the next page. Feel free to take a look at it, but <strong>do not add, remove or edit anything</strong> in it.' ,'accelera-export'); ?></li>
+				</ol>
+
+
 			</p>
 		</div>
 
-		<a href="tools.php?page=accelera-export-csv" class="button button-primary">CSV Export</a>
+		<a href="tools.php?page=accelera-export-csv" class="button button-primary"><?php echo esc_html__( 'CSV Export', 'accelera-export' ); ?></a>
 	</div>
 	<?php
 }

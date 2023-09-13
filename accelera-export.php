@@ -8,6 +8,7 @@ Author URI: https://accelera.site
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: accelera-export
+Domain Path: /languages/
 */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -24,7 +25,7 @@ add_action( 'admin_menu', 'accelera_register_export_settings_page' );
 // Add action links to plugin list
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_accelera_export_action_links' );
 function add_accelera_export_action_links( $links ) {
-	$settings_link = array( '<a href="' . admin_url( 'tools.php?page=accelera-export' ) . '">Export data</a>' );
+	$settings_link = array( '<a href="' . admin_url( 'tools.php?page=accelera-export' ) . '">'.__( 'Export data', 'accelera-export' ).'</a>' );
 	return array_merge( $links, $settings_link );
 }
 
@@ -40,6 +41,16 @@ if ( ! function_exists( 'write_log' ) ) {
         }
     }
 }
+
+
+/**
+ * Load plugin textdomain.
+ */
+add_action( 'init', 'accelera_load_textdomain' );
+function accelera_load_textdomain() {
+  load_plugin_textdomain( 'accelera-export', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+
 
 // 1st step
 require( ACCELERA_EXPORT_PATH . 'includes/intro.php' );

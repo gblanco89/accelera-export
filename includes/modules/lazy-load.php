@@ -204,10 +204,15 @@ class Accelera_Lazy_Load{
 			$page 			= wp_remote_get( $url );
 			$content 		= wp_remote_retrieve_body( $page );
 
-			$images 		= $this->check_for_lazy( $content );
+			$images 		= $this->check_for_lazy( $content ) ? $this->check_for_lazy( $content ) : [];
+		
 			$lazy_found 	= 0;
 			$total_found 	= count ( $images );
-
+			
+			if( !$total_found ){
+				return false;
+			}
+			
 			foreach ( $images as $image ) {
 
 			   // Check if there are images that contain "lazy"

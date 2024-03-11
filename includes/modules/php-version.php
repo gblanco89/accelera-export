@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $temp_results_tasks_auxiliar = '';
 
-if ( version_compare( PHP_VERSION, '8.0.0', '>=' ) ) {
+if ( version_compare( PHP_VERSION, '8.1.0', '>=' ) ) {
     $results_tasks[] = 'A';
 } else {
     $temp_results_tasks_auxiliar = PHP_VERSION;

@@ -189,11 +189,44 @@ function acc_queries( &$variables_db ) {
         }
     }
 
-    // Autoloads size (in KB)
-    $autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
-    foreach( $autoloads_result as $object=>$uno ){
-        $variables_db['autoloads'] = round( $uno->autoload_size );
+    // Autoloads size (in KB) OLD
+    // $autoloads_result = $wpdb->get_results("SELECT SUM(LENGTH(option_value)/1024.0) as autoload_size FROM $wpdb->options WHERE autoload='yes'");
+    // foreach( $autoloads_result as $object=>$uno ){
+    //     $variables_db['autoloads'] = round( $uno->autoload_size );
+    // }
+
+    // Get autoloaded options
+    $alloptions = wp_load_alloptions();
+
+    // Initialize total size and toplist array
+    $total_size_bytes = 0;
+
+    // Calculate total size and build top 20 list
+    foreach ( $alloptions as $option_name => $option_value ) {
+        // Serialize if needed to calculate size with overhead
+        if ( is_array( $option_value ) || is_object( $option_value ) ) {
+            $option_value = maybe_serialize( $option_value );
+        }
+
+        $size_bytes = strlen( (string) $option_value );
+        $total_size_bytes += $size_bytes;
+
     }
+
+    // Convert total size to KB
+    $total_size_kb = round( $total_size_bytes / 1024 );
+
+    $variables_db['autoloads'] = $total_size_kb . ' KB';
+}
+
+function get_all_tables() {
+    global $wpdb;
+    $tables = $wpdb->get_results( "SHOW TABLES", ARRAY_N );
+    $table_names = array();
+    foreach ( $tables as $table ) {
+        $table_names[] = str_replace( $wpdb->prefix, '', $table[0] );
+    }
+    return $table_names;
 }
 
 /*

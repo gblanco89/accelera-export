@@ -18,7 +18,7 @@ define( 'ACCELERA_EXPORT_PATH', plugin_dir_path( __FILE__ ) );
 // Register settings page
 function accelera_register_export_settings_page() {
   add_submenu_page( 'tools.php', 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export', 'accelera_export_intro' );
-  add_submenu_page( null, 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export-csv', 'accelera_export_in_csv' );
+  add_submenu_page( null, 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export-txt', 'accelera_export_in_csv' );
 }
 add_action( 'admin_menu', 'accelera_register_export_settings_page' );
 
@@ -57,30 +57,11 @@ require( ACCELERA_EXPORT_PATH . 'includes/intro.php' );
 
 // 2nd step
 function accelera_export_in_csv() {
-	require( ACCELERA_EXPORT_PATH . 'includes/prep.php');
+ 
 
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/image-opt.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/file-cache.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/theme.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/css-min.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/js-min.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/file-compression.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/php-version.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/combine.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/browser-caching.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/defer-js.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/heartbeat.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/clean-headers.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/lazy-load.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/self-pingbacks.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/external-res.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/preconnect.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/ads.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/disable-wp-cron.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/http-two.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/dns-prefetch.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/database.php');
-	require( ACCELERA_EXPORT_PATH . 'includes/modules/critical-css.php');
-
-	require( ACCELERA_EXPORT_PATH . 'includes/end.php');
+    require( ACCELERA_EXPORT_PATH . 'includes/prep.php' );
+    require( ACCELERA_EXPORT_PATH . 'includes/modules/theme.php' );
+    // require( ACCELERA_EXPORT_PATH . 'includes/modules/php-version.php' );
+    require( ACCELERA_EXPORT_PATH . 'includes/modules/database.php' );
+    require( ACCELERA_EXPORT_PATH . 'includes/end.php' );
 }

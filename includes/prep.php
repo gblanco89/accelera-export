@@ -167,7 +167,10 @@ write_log( 'Accelera Export - Step 3 completed' );
 // Preparations - Plugin list + checking each plugin against Accelera list
 $pluginlist = array();
 $plugins = get_plugins();
+$mu_plugins = get_mu_plugins();
 
+
+// dd($plugins); // Debugging
 if ( $plugins ) {
     $sno = 1;
     foreach ( $plugins as $key=>$plugin ) {
@@ -242,6 +245,24 @@ if ( $plugins ) {
                 $status = 'Active';
             }
             $pluginlist[] = $sno . '|' . $plugin['Name'] . '|' . $plugin['Description'] . '|' . $plugin['Author'] . '|' . $status . '|' . $plugin['Version'];
+            $sno++;
+        }
+    }
+}
+
+$mu_pluginlist = [];
+// dd($plugins); // Debugging
+if ( $mu_plugins ) {
+    $sno = 1;
+    foreach ( $mu_plugins as $key=>$plugin ) {
+
+        // Adding plugin to list except if it's Accelera Export
+        if ( 'accelera-export' !== $plugin['TextDomain'] ) {
+            $status = 'Inactive';
+            if ( is_plugin_active( $key ) ) {
+                $status = 'Active';
+            }
+            $mu_pluginlist[] = $sno . '|' . $plugin['Name'] . '|' . $plugin['Description'] . '|' . $plugin['Author'] . '|' . $status . '|' . $plugin['Version'];
             $sno++;
         }
     }

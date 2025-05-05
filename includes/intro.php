@@ -40,15 +40,31 @@ function accelera_export_intro() {
 			<?php _e( 'This is just the first step before exporting your site information. Don\'t worry, we will only export technical information that is useful for the assessment report; no personal or private data is exported. Please follow the next steps:<br />', 'accelera-export' ); ?>
 
 				<ol>
-					<li><?php _e( 'Click on the button "CSV Export" below and wait a few seconds until the plugin collects all the technical information. <strong>Do not refresh or exit this page.</strong>' ,'accelera-export'); ?></li>
-					<li><?php _e( 'Download the CSV in the next page. Feel free to take a look at it, but <strong>do not add, remove or edit anything</strong> in it.' ,'accelera-export'); ?></li>
+					<li><?php _e( 'Click on the button "TXT Export" below and wait a few seconds until the plugin collects all the technical information. <strong>Do not refresh or exit this page.</strong>' ,'accelera-export'); ?></li>
+					<li><?php _e( 'Download the TXT in the next page. Feel free to take a look at it, but <strong>do not add, remove or edit anything</strong> in it.' ,'accelera-export'); ?></li>
 				</ol>
 
 
 			</p>
 		</div>
 
-		<a href="tools.php?page=accelera-export-csv" class="button button-primary"><?php echo esc_html__( 'CSV Export', 'accelera-export' ); ?></a>
+
+		<form method="post" action="<?php echo admin_url( 'tools.php?page=accelera-export-txt' ); ?>">
+			<table class="form-table">
+				<tr>
+					<th scope="row">
+						<label for="hosting_provider"><?php _e( 'Hosting Provider', 'accelera-export' ); ?></label>
+					</th>
+					<td>
+						<input type="text" id="hosting_provider" name="hosting_provider" class="regular-text" required>
+						<p class="description"><?php _e( 'Enter your current hosting provider.', 'accelera-export' ); ?></p>
+					</td>
+				</tr>
+			</table>
+			<?php submit_button( __( 'TXT Export', 'accelera-export' ) ); ?>
+		</form>
+
+		<!-- <a href="tools.php?page=accelera-export-txt" class="button button-primary"><?php echo esc_html__( 'TXT Export', 'accelera-export' ); ?></a> -->
 	</div>
 	<?php
 }

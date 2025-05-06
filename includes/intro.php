@@ -63,8 +63,6 @@ function accelera_export_intro() {
 			</table>
 			<?php submit_button( __( 'TXT Export', 'accelera-export' ) ); ?>
 		</form>
-
-		<!-- <a href="tools.php?page=accelera-export-txt" class="button button-primary"><?php echo esc_html__( 'TXT Export', 'accelera-export' ); ?></a> -->
 	</div>
 	<?php
 }

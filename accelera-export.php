@@ -51,7 +51,6 @@ function accelera_load_textdomain() {
   load_plugin_textdomain( 'accelera-export', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
-
 // 1st step
 require( ACCELERA_EXPORT_PATH . 'includes/intro.php' );
 
@@ -60,8 +59,6 @@ function accelera_export_in_csv() {
  
 
     require( ACCELERA_EXPORT_PATH . 'includes/prep.php' );
-    require( ACCELERA_EXPORT_PATH . 'includes/modules/theme.php' );
-    // require( ACCELERA_EXPORT_PATH . 'includes/modules/php-version.php' );
     require( ACCELERA_EXPORT_PATH . 'includes/modules/database.php' );
     require( ACCELERA_EXPORT_PATH . 'includes/end.php' );
 }

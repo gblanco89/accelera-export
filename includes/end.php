@@ -7,13 +7,6 @@ $upload_dir = wp_upload_dir();
 $filepath   = $upload_dir['basedir'] . '/' . $filename;
 $file       = fopen( $filepath, 'w' );
 
-/**
- * helper to write a section header
- */
-function write_section( $file, $title ) {
-    fwrite( $file, "/------------/ {$title} /------------/" . PHP_EOL );
-}
-
 // 2) Task Results
 // write_section( $file, 'Task Results' );
 // if ( ! empty( $results_tasks ) && is_array( $results_tasks ) ) {
@@ -30,14 +23,14 @@ function write_section( $file, $title ) {
 
 // 3) Theme Info (was $results_tasks_auxiliar)
 write_section( $file, 'Theme Info' );
-if ( ! empty( $results_tasks_auxiliar ) ) {
-    if ( is_array( $results_tasks_auxiliar ) ) {
-        foreach ( $results_tasks_auxiliar as $key => $val ) {
+if ( ! empty( $my_theme ) ) {
+    if ( is_array( $my_theme ) ) {
+        foreach ( $my_theme as $key => $val ) {
             // if you need key: value format
             fwrite( $file, "{$key}: {$val}" . PHP_EOL );
         }
     } else {
-        fwrite( $file, $results_tasks_auxiliar . PHP_EOL );
+        fwrite( $file, $my_theme . PHP_EOL );
     }
     fwrite( $file, PHP_EOL );
 }
@@ -114,3 +107,10 @@ echo '<style>.update-nag, .notice-info:not(.accelera-notice), .notice-warning:no
 echo '<div class="wrap"><h1>Accelera Export</h1><div class="notice notice-success accelera-notice"><p>' . $message . '</p></div></div>';
 
 write_log( 'Accelera Export - TXT format completed' );
+
+/**
+ * helper to write a section header
+ */
+function write_section( $file, $title ) {
+    fwrite( $file, "/------------/ {$title} /------------/" . PHP_EOL );
+}

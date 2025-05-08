@@ -1,60 +1,63 @@
+# Copyright (C) 2025 Accelera
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accelera Export\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 11:52+0000\n"
-"PO-Revision-Date: 2023-09-13 12:25+0300\n"
+"Project-Id-Version: Accelera Export 2.0\n"
+"POT-Creation-Date: 2025-05-08T07:29:41+00:00\n"
+"PO-Revision-Date: 2025-05-08 11:00+0300\n"
 "Last-Translator: \n"
-"Language-Team: Spanish (Spain)\n"
+"Language-Team: \n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.3.2\n"
-"X-Loco-Version: 2.6.6; wp-6.3.1\n"
+"X-Generator: Poedit 3.6\n"
 "X-Domain: accelera-export\n"
 
-#. Author of the plugin
-msgid "Accelera"
-msgstr "Accelera"
-
-#. Name of the plugin
-#: includes/intro.php:25
+#. Plugin Name of the plugin
+#: accelera-export.php includes/intro.php:25
 msgid "Accelera Export"
 msgstr "Accelera Export"
 
-#: includes/intro.php:43
-msgid ""
-"Click on the button \"CSV Export\" below and wait a few seconds until the "
-"plugin collects all the technical information. <strong>Do not refresh or "
-"exit this page.</strong>"
-msgstr ""
-"Haz clic en el botón \"Exportar CSV\" a continuación y espera unos segundos "
-"hasta que el plugin recopile toda la información técnica. <strong>No "
-"refresques ni salgas de esta página.</strong>"
-
 #. Description of the plugin
-msgid "Companion app for the Website Speed-Up Audit service"
-msgstr ""
-"Plugin complementario para el servicio de auditoría de rendimiento de "
-"WordPress"
-
-#: includes/intro.php:51
-msgid "CSV Export"
-msgstr "Exportar CSV"
-
-#: includes/intro.php:44
+#: accelera-export.php
 msgid ""
-"Download the CSV in the next page. Feel free to take a look at it, but "
-"<strong>do not add, remove or edit anything</strong> in it."
+"A companion plugin that exports website information for assessment by "
+"Accelera."
 msgstr ""
-"Descarga el CSV en la página siguiente. Puedes echarle un vistazo, pero "
-"<strong>no añadas, elimines ni edites nada</strong>."
+"Un plugin complementario que exporta información de la web para su "
+"evaluación por parte de Accelera."
+
+#. Author of the plugin
+#: accelera-export.php
+msgid "Accelera"
+msgstr "Accelera"
+
+#. Author URI of the plugin
+#: accelera-export.php
+msgid "https://accelerawp.com"
+msgstr "https://accelerawp.com"
 
 #: accelera-export.php:28
 msgid "Export data"
-msgstr "Exportar información"
+msgstr "Exportar datos"
+
+#: includes/end.php:81
+msgid "Not provided"
+msgstr "No proporcionado"
+
+#: includes/end.php:101
+msgid ""
+"Site info exported successfully. Click <a href=\"%s\" "
+"target=\"_blank\">here</a> to download your TXT (you can right-click the "
+"link to save it to your computer). Or click <a href=\"tools.php?"
+"page=accelera-export\">here</a> to go back."
+msgstr ""
+"La información del sitio se ha exportado correctamente. Haz clic <a "
+"href=\"%s\" target=\"_blank\">aquí</a> para descargar el TXT (puedes hacer "
+"clic con el botón derecho en el enlace para guardarlo en tu ordenador). O "
+"haz clic <a href=\"tools.php?page=accelera-export\">aquí</a> para volver "
+"atrás.\v"
 
 #: includes/intro.php:32
 msgid ""
@@ -64,31 +67,50 @@ msgid ""
 msgstr ""
 "¡Ey! Parece que tienes Nitropack instalado y activo. Ve a los <a "
 "href=\"options-general.php?page=nitropack\">ajustes de Nitropack</a> y "
-"activa el modo seguro. Luego, regresa aquí y continúa con el proceso."
-
-#. Author URI of the plugin
-msgid "https://accelera.site"
-msgstr "https://accelera.site"
-
-#: includes/end.php:62
-#, php-format
-msgid ""
-"Site info exported successfully. Click <a href=\"%s\" "
-"target=\"_blank\">here</a> to download your CSV. Or click <a href=\"tools."
-"php?page=accelera-export\">here</a> to go back."
-msgstr ""
-"La información del sitio se ha exportado correctamente. Haz clic <a "
-"href=\"%s\" target=\"_blank\">aquí</a> para descargar tu CSV. O haz clic <a "
-"href=\"tools.php?page=accelera-export\">aquí</a> para volver atrás."
+"activa el modo seguro. Luego, vuelve aquí y continúa con el proceso."
 
 #: includes/intro.php:40
 msgid ""
 "This is just the first step before exporting your site information. Don't "
-"worry, we will only export technical information that is useful for the "
-"assessment report; no personal or private data is exported. Please follow "
+"worry, the plugin only collects technical website data relevant to "
+"Accelera's services; no personal or private data is exported. Please follow "
 "the next steps:<br />"
 msgstr ""
-"Este es solo el primer paso antes de exportar la información de tu sitio. No "
-"te preocupes, sólo exportaremos información técnica que sea útil para la "
-"auditoría; no se exportan datos personales o privados. Sigue los siguientes "
-"pasos:<br />"
+"Este es sólo el primer paso antes de exportar la información de tu sitio. "
+"No te preocupes, el plugin sólo recoge datos técnicos del sitio web "
+"relevantes para los servicios de Accelera; no se exporta ningún dato "
+"personal o privado. Sigue los pasos siguientes:<br />"
+
+#: includes/intro.php:43
+msgid "Enter your current hosting provider in the box below."
+msgstr "Introduce tu proveedor de alojamiento actual en la casilla más abajo."
+
+#: includes/intro.php:44
+msgid ""
+"Click the \"TXT Export\" button below and wait a few seconds while the "
+"plugin collects all the technical information. <strong>Do not refresh or "
+"close the page.</strong>"
+msgstr ""
+"Haz clic en el botón \"Exportar TXT\" abajo y espera unos segundos mientras "
+"el plugin recoge toda la información técnica. <strong>No actualices ni "
+"cierres la página.</strong>"
+
+#: includes/intro.php:45
+msgid ""
+"Download the TXT on the next page. Feel free to take a look at it, but "
+"<strong>please do not add, remove or edit anything</strong>."
+msgstr ""
+"Descarga el TXT en la siguiente página. Puedes darle un vistazo si quieres, "
+"pero <strong>no añadas, elimines o edites nada, por favor</strong>."
+
+#: includes/intro.php:57
+msgid "Hosting provider"
+msgstr "Proveedor de alojamiento (\"hosting\")"
+
+#: includes/intro.php:61
+msgid "Enter here your current hosting provider."
+msgstr "Introduce aquí qué empresa se encarga de alojar tu web."
+
+#: includes/intro.php:65
+msgid "TXT Export"
+msgstr "Exportar TXT"

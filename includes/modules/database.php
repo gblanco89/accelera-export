@@ -30,23 +30,23 @@ function format_percentage( $current, $total ) {
  *
  * @since 1.0.0
  *
- * @return string 'A' if Pers. Object Cache is used.
- * @return string 'B' if Pers. Object Cache should be used.
- * @return string 'C' if Pers. Object Cache shouldn't be used.
+ * @return string 'In use' if Pers. Object Cache is used.
+ * @return string 'Should be used' if Pers. Object Cache should be used.
+ * @return string 'Should not be used' if Pers. Object Cache shouldn't be used.
  */
 function accelera_object_cache_check() {
-    $result = 'A';
+    $result = 'In use';
 
     if ( wp_using_ext_object_cache() ) {
         return $result;
     }
 
     if ( ! acc_should_suggest_persistent_object_cache() ) {
-        $result = 'C';
+        $result = 'Should not be used';
         return $result;
     }
 
-    return 'B';
+    return 'Should be used';
 }
 
 /**

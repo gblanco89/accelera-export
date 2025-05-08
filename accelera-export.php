@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Accelera Export
-description: Companion app for the Website Speed-Up Audit service
-Version: 0.43
+Description: A companion plugin that exports website information for assessment by Accelera.
+Version: 2.0
 Author: Accelera
-Author URI: https://accelera.site
+Author URI: https://accelerawp.com
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: accelera-export

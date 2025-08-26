@@ -98,7 +98,7 @@ fclose( $file );
 // 10) Success message
 $url     = $upload_dir['baseurl'] . '/' . $filename;
 $message = sprintf(
-    __('Site info exported successfully. Click <a href="%s" target="_blank">here</a> to download your TXT (you can right-click the link to save it to your computer). Or click <a href="tools.php?page=accelera-export">here</a> to go back.', 'accelera-export'),
+    __('Site info exported successfully. Click <a href="%s" target="_blank" download>here</a> to download your TXT (you can right-click the link to save it to your computer). Or click <a href="tools.php?page=accelera-export">here</a> to go back.', 'accelera-export'),
     esc_url( $url )
 );
 

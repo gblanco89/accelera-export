@@ -15,7 +15,7 @@ Domain Path: /languages/
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 define( 'ACCELERA_EXPORT_PATH', plugin_dir_path( __FILE__ ) );
-
+define('ACCELERA_EXPORT_AUDIT_APP_API_KEY', 'GjzL<+eZ&fvhE0/[<b6L-k$B`?(#%[N?1a;wn#YGp#RW#NL??gS+k~R_rcg^;hE_' );
 // Register settings page
 function accelera_register_export_settings_page() {
   add_submenu_page( 'tools.php', 'Accelera Export', 'Accelera Export', 'manage_options', 'accelera-export', 'accelera_export_intro' );
@@ -51,6 +51,9 @@ add_action( 'init', 'accelera_load_textdomain' );
 function accelera_load_textdomain() {
   load_plugin_textdomain( 'accelera-export', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
+
+// Load API Client
+require( ACCELERA_EXPORT_PATH . 'includes/class-audit-api-client.php' );
 
 // 1st step
 require( ACCELERA_EXPORT_PATH . 'includes/intro.php' );

@@ -41,7 +41,7 @@ function accelera_export_intro() {
 
 				<ol>
 					<li><?php _e( 'Enter your current hosting provider in the box below.' ,'accelera-export'); ?></li>
-					<li><?php _e( 'Click the "TXT Export" button below and wait a few seconds while the plugin collects all the technical information. <strong>Do not refresh or close the page.</strong>' ,'accelera-export'); ?></li>
+					<li><?php _e( 'Click the "Send information" button below and wait a few seconds while the plugin collects all the technical information. <strong>Do not refresh or close the page.</strong>' ,'accelera-export'); ?></li>
 					<li><?php _e( 'Download the TXT on the next page. Feel free to take a look at it, but <strong>please do not add, remove or edit anything</strong>.' ,'accelera-export'); ?></li>
 				</ol>
 
@@ -62,7 +62,7 @@ function accelera_export_intro() {
 					</td>
 				</tr>
 			</table>
-			<?php submit_button( __( 'TXT Export', 'accelera-export' ) ); ?>
+			<?php submit_button( __( 'Send information', 'accelera-export' ) ); ?>
 		</form>
 	</div>
 	<?php
